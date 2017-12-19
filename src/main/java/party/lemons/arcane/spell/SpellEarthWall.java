@@ -60,7 +60,9 @@ public class SpellEarthWall extends Spell
 							EntityPhysicsBlock block = new EntityPhysicsBlock(world, enPos.getX() + 0.5, yOffset + (enPos.getY() + 0.5), enPos.getZ() + 0.5, player);
 							block.setState(st);
 							block.getDataManager().set(EntityPhysicsBlock.FIRED, true);
-							block.setVelocity(0, 0.8, 0);
+							block.motionX = 0;
+							block.motionY = 0.8;
+							block.motionZ = 0;
 
 							world.setBlockToAir(enPos);
 							world.spawnEntity(block);
@@ -70,8 +72,9 @@ public class SpellEarthWall extends Spell
 								block = new EntityPhysicsBlock(world, enPos.getX() + 0.5, yOffset + (enPos.getY()), enPos.getZ() + 0.5, player);
 								block.setState(Blocks.STONE.getDefaultState());
 								block.getDataManager().set(EntityPhysicsBlock.FIRED, true);
-								block.setVelocity(0, 0.5, 0);
-
+								block.motionX = 0;
+								block.motionY = 0.5;
+								block.motionZ = 0;
 								world.spawnEntity(block);
 							}
 						}
