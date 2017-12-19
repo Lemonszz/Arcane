@@ -1,1 +1,3 @@
-magicmod
+#Arcane
+
+`It's a mod!`
