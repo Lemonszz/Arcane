@@ -17,7 +17,7 @@ import party.lemons.arcane.config.ArcaneConstants;
 public class Spells
 {
 	public static Spell fireball_1, fireball_2, fireball_3, fireball_4, fireball_5,
-						rock_throw, earth_wall, earth_3, earth_4, earth_5,
+						rock_throw, earth_wall, hole, earth_4, earth_5,
 						leaping,
 						fertilizer, photosynthesis;
 
@@ -32,8 +32,8 @@ public class Spells
 
 		rock_throw = new SpellRockThrow(SpellPages.ELEMENTAL, 3).setUnlockCost(2).setCastMana(40).setUnlocalizedName("rock_throw").setRegistryName("rock_throw");
 		earth_wall = new SpellEarthWall(SpellPages.ELEMENTAL).setUnlocalizedName("earth_wall").setRegistryName("earth_wall").setParents(rock_throw);
-		earth_3 = new Spell(SpellPages.ELEMENTAL).setUnlocalizedName("earth_3").setRegistryName("earth_3").setParents(earth_wall);
-		earth_4 = new Spell(SpellPages.ELEMENTAL).setUnlocalizedName("earth_4").setRegistryName("earth_4").setParents(earth_3);
+		hole = new SpellEmergencyHole(SpellPages.ELEMENTAL).setDrawStack(new ItemStack(Items.STONE_SHOVEL)).setUnlocalizedName("hole").setRegistryName("hole");
+		earth_4 = new Spell(SpellPages.ELEMENTAL).setUnlocalizedName("earth_4").setRegistryName("earth_4").setParents(hole);
 		earth_5 = new Spell(SpellPages.ELEMENTAL).setUnlocalizedName("earth_5").setRegistryName("earth_5").setParents(earth_4);
 		leaping = new SpellLeap(SpellPages.ELEMENTAL, 1).setCastMana(20).setUnlocalizedName("leaping").setRegistryName("leaping");
 		fertilizer = new SpellBonemeal(SpellPages.FARMING, 1).setDrawStack(new ItemStack(Items.DYE, 1, 15)).setCastMana(40).setUnlocalizedName("fertilizer").setRegistryName("fertilizer");
@@ -47,7 +47,7 @@ public class Spells
 				fireball_5,
 				rock_throw,
 				earth_wall,
-				earth_3,
+				hole,
 				earth_4,
 				earth_5,
 				leaping,
