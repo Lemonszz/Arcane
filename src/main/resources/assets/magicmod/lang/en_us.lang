@@ -1,0 +1,28 @@
+page.elemental.name=Elemental
+page.farming.name=Farming
+page.summoning.name=Summoning
+page.alchemy.name=Alchemy
+
+itemGroup.magicmod=Unnamed Magic Mod
+
+item.spell_tome.name=Spell Tome
+item.mana_potion.name=Mana Potion
+
+spell.fireball_1.name=Flame
+spell.fireball_2.name=Scald
+spell.fireball_3.name=Fire Bolt
+spell.fireball_4.name=Fire Storm
+spell.fireball_5.name=Inferno
+
+spell.rock_throw.name=Rock Throw
+spell.earth_2.name=Tremor
+spell.earth_3.name=Aftershock
+spell.earth_4.name=Quake
+spell.earth_5.name=Eruption
+
+spell.leaping.name=Leaping
+spell.fertilizer.name=Fertilizer
+spell.photosynthesis.name=Photosynthesis
+magic.storedlevels=Points
+magic.requiredxp=Required Levels
+magic.maxmana=Mana
