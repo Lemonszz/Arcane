@@ -57,13 +57,13 @@ public class SpellEarthWall extends Spell
 						BlockPos enPos = pos.offset(EnumFacing.DOWN, i);
 						if(ArcaneConfig.isEarthBlock(world.getBlockState(enPos).getBlock()))
 						{
-							float yOffset = (3 - i);
+							float yOffset = 0.24161F * (3 - i);
 							IBlockState st = world.getBlockState(enPos);
 							EntityPhysicsBlock block = new EntityPhysicsBlock(world, enPos.getX() + 0.5, yOffset + (enPos.getY() + 0.5), enPos.getZ() + 0.5, player);
 							block.setState(st);
 							block.getDataManager().set(EntityPhysicsBlock.FIRED, true);
 							block.motionX = 0;
-							block.motionY = 0.8;
+							block.motionY = 0.55;
 							block.motionZ = 0;
 
 							world.setBlockToAir(enPos);
