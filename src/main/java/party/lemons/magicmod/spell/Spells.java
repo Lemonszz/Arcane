@@ -20,7 +20,7 @@ import party.lemons.magicmod.config.ModConstants;
 public class Spells
 {
 	public static Spell fireball_1, fireball_2, fireball_3, fireball_4, fireball_5,
-						rock_throw, earth_2, earth_3, earth_4, earth_5,
+						rock_throw, earth_wall, earth_3, earth_4, earth_5,
 						leaping,
 						fertilizer, photosynthesis;
 
@@ -34,8 +34,8 @@ public class Spells
 		fireball_5 = new SpellDragonFireball(SpellPages.ELEMENTAL).setCastMana(150).setUnlockCost(8).setUnlocalizedName("fireball_5").setRegistryName("fireball_5").setParents(fireball_4);
 
 		rock_throw = new SpellRockThrow(SpellPages.ELEMENTAL, 3).setUnlockCost(2).setCastMana(40).setUnlocalizedName("rock_throw").setRegistryName("rock_throw");
-		earth_2 = new Spell(SpellPages.ELEMENTAL).setUnlocalizedName("earth_2").setRegistryName("earth_2").setParents(rock_throw);
-		earth_3 = new Spell(SpellPages.ELEMENTAL).setUnlocalizedName("earth_3").setRegistryName("earth_3").setParents(earth_2);
+		earth_wall = new SpellEarthWall(SpellPages.ELEMENTAL).setUnlocalizedName("earth_wall").setRegistryName("earth_wall").setParents(rock_throw);
+		earth_3 = new Spell(SpellPages.ELEMENTAL).setUnlocalizedName("earth_3").setRegistryName("earth_3").setParents(earth_wall);
 		earth_4 = new Spell(SpellPages.ELEMENTAL).setUnlocalizedName("earth_4").setRegistryName("earth_4").setParents(earth_3);
 		earth_5 = new Spell(SpellPages.ELEMENTAL).setUnlocalizedName("earth_5").setRegistryName("earth_5").setParents(earth_4);
 		leaping = new SpellLeap(SpellPages.ELEMENTAL, 1).setCastMana(20).setUnlocalizedName("leaping").setRegistryName("leaping");
@@ -49,7 +49,7 @@ public class Spells
 				fireball_4,
 				fireball_5,
 				rock_throw,
-				earth_2,
+				earth_wall,
 				earth_3,
 				earth_4,
 				earth_5,
