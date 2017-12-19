@@ -1,9 +1,7 @@
 package party.lemons.arcane.entity;
 
 import com.google.common.base.Optional;
-import com.google.common.collect.Lists;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockAnvil;
 import net.minecraft.block.BlockFalling;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -12,6 +10,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.MoverType;
 import net.minecraft.entity.item.EntityFallingBlock;
+import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -32,17 +31,20 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import party.lemons.arcane.api.capability.PlayerData;
 
+import javax.annotation.Nullable;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by Sam on 16/12/2017.
  */
 public class EntityPhysicsBlock extends EntityFallingBlock
 {
-	private EntityPlayer player;
 	protected static final DataParameter<BlockPos> ORIGIN = EntityDataManager.createKey(EntityPhysicsBlock.class, DataSerializers.BLOCK_POS);
 	private static final DataParameter<Optional<IBlockState>> STATE = EntityDataManager.createKey(EntityPhysicsBlock.class, DataSerializers.OPTIONAL_BLOCK_STATE);
 	public static final DataParameter<Boolean> FIRED = EntityDataManager.createKey(EntityPhysicsBlock.class, DataSerializers.BOOLEAN);
+	protected static final DataParameter<Optional<UUID>> OWNER_UNIQUE_ID = EntityDataManager.<Optional<UUID>>createKey(EntityTameable.class, DataSerializers.OPTIONAL_UNIQUE_ID);
+
 	int age = 0;
 	int fallTime = 0;
 
@@ -65,7 +67,7 @@ public class EntityPhysicsBlock extends EntityFallingBlock
 		this.prevPosY = y;
 		this.prevPosZ = z;
 		this.setOrigin(new BlockPos(this));
-		this.player = owner;
+		this.dataManager.set(OWNER_UNIQUE_ID, Optional.fromNullable(owner.getUniqueID()));
 
 	}
 
@@ -110,6 +112,7 @@ public class EntityPhysicsBlock extends EntityFallingBlock
 		this.dataManager.register(ORIGIN, BlockPos.ORIGIN);
 		this.dataManager.register(STATE, Optional.<IBlockState>absent());
 		this.dataManager.register(FIRED, false);
+		this.dataManager.register(OWNER_UNIQUE_ID, Optional.absent());
 	}
 
 	/**
@@ -120,22 +123,31 @@ public class EntityPhysicsBlock extends EntityFallingBlock
 		return !this.isDead;
 	}
 
+	@Nullable
+	public EntityLivingBase getOwner()
+	{
+		try
+		{
+			UUID uuid = dataManager.get(OWNER_UNIQUE_ID).get();
+			return uuid == null ? null : this.world.getPlayerEntityByUUID(uuid);
+		}
+		catch (IllegalArgumentException var2)
+		{
+			return null;
+		}
+	}
+
 	public void onUpdate()
 	{
-		if(world.isRemote)
-		{
-			player = Minecraft.getMinecraft().player;
-		}
-
 		for(int i = 0; i < 2; i++)
 		{
 			float x1 = 0.5F + (float) (posX - world.rand.nextFloat());
 			float y1 = (float) (posY + world.rand.nextFloat());
 			float z1 = 0.5F + (float) (posZ - world.rand.nextFloat());
-
-			//world.spawnParticle(EnumParticleTypes.BLOCK_DUST, x1, posY, y1, 0, 1, 0, ));
 			world.spawnParticle(EnumParticleTypes.BLOCK_DUST, x1, y1, z1, 0, 0, 0, Block.getStateId(getState()));
 		}
+
+		EntityPlayer player = (EntityPlayer) getOwner();
 
 		age++;
 		if(player != null && age > 2)
@@ -311,7 +323,7 @@ public class EntityPhysicsBlock extends EntityFallingBlock
 		{
 			for(EntityLivingBase e : entities)
 			{
-				e.attackEntityFrom(DamageSource.causePlayerDamage(player), amount);
+				e.attackEntityFrom(DamageSource.causePlayerDamage((EntityPlayer) getOwner()), amount);
 			}
 		}
 	}
