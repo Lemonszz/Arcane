@@ -1,5 +1,6 @@
 package party.lemons.arcane.spell;
 
+import net.minecraft.block.BlockStone;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -12,6 +13,7 @@ import party.lemons.arcane.api.spell.Spell;
 import party.lemons.arcane.api.spell.SpellPage;
 import party.lemons.arcane.config.ArcaneConfig;
 import party.lemons.arcane.entity.EntityPhysicsBlock;
+import party.lemons.arcane.misc.ArcaneUtils;
 
 /**
  * Created by Sam on 16/12/2017.
@@ -70,7 +72,16 @@ public class SpellEarthWall extends Spell
 							if(i == 2)
 							{
 								block = new EntityPhysicsBlock(world, enPos.getX() + 0.5, yOffset + (enPos.getY()), enPos.getZ() + 0.5, player);
-								block.setState(Blocks.STONE.getDefaultState());
+
+								IBlockState fillerState = ArcaneUtils.choose(world.rand,
+										Blocks.STONE.getDefaultState(),
+										Blocks.DIRT.getDefaultState(),
+										Blocks.STONE.getDefaultState().withProperty(BlockStone.VARIANT, BlockStone.EnumType.ANDESITE),
+										Blocks.STONE.getDefaultState().withProperty(BlockStone.VARIANT, BlockStone.EnumType.DIORITE),
+										Blocks.STONE.getDefaultState().withProperty(BlockStone.VARIANT, BlockStone.EnumType.GRANITE),
+										Blocks.GRAVEL.getDefaultState()
+								);
+								block.setState(fillerState);
 								block.getDataManager().set(EntityPhysicsBlock.FIRED, true);
 								block.motionX = 0;
 								block.motionY = 0.5;
