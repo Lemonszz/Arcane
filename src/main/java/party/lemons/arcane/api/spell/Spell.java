@@ -1,19 +1,11 @@
 package party.lemons.arcane.api.spell;
 
 import jline.internal.Nullable;
-import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.text.translation.I18n;
-import net.minecraft.world.World;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 import party.lemons.arcane.api.capability.PlayerData;
 
@@ -109,7 +101,7 @@ public class Spell extends IForgeRegistryEntry.Impl<Spell> implements Comparable
 
 	public String getLocalizedName()
 	{
-		return I18n.translateToLocal(unlocName);
+		return I18n.format(unlocName);
 	}
 
 	public String getUnlocalizedDescription()
