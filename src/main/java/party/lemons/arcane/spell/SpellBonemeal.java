@@ -1,6 +1,5 @@
 package party.lemons.arcane.spell;
 
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
@@ -9,7 +8,6 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import party.lemons.arcane.api.spell.Spell;
 import party.lemons.arcane.api.spell.SpellPage;
-import party.lemons.arcane.entity.EntityPhysicsBlock;
 
 /**
  * Created by Sam on 18/12/2017.

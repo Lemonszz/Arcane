@@ -1,4 +1,4 @@
-package party.lemons.arcane.client.render;
+package party.lemons.arcane.entity.render;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BufferBuilder;

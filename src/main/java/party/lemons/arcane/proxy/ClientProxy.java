@@ -5,7 +5,7 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import party.lemons.arcane.client.KeyBindings;
-import party.lemons.arcane.client.render.RenderFirestorm;
+import party.lemons.arcane.entity.render.RenderFirestorm;
 import party.lemons.arcane.entity.EntityFirestormProjectile;
 import party.lemons.arcane.entity.EntityPhysicsBlock;
 import party.lemons.arcane.entity.render.RenderPhysicsBlock;

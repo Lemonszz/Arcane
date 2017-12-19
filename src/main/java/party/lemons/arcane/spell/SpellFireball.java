@@ -2,7 +2,6 @@ package party.lemons.arcane.spell;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityFireball;
-import net.minecraft.entity.projectile.EntitySmallFireball;
 import net.minecraft.util.math.Vec3d;
 import party.lemons.arcane.api.spell.Spell;
 import party.lemons.arcane.api.spell.SpellPage;

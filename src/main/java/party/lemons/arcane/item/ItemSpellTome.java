@@ -1,6 +1,5 @@
 package party.lemons.arcane.item;
 
-import javafx.scene.control.TextFormatter;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;

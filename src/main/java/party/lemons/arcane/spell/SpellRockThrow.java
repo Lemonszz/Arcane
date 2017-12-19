@@ -1,24 +1,11 @@
 package party.lemons.arcane.spell;
 
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.item.EntityFallingBlock;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.SoundEvents;
-import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.World;
-import net.minecraft.world.chunk.ChunkPrimer;
-import net.minecraft.world.gen.MapGenRavine;
-import net.minecraft.world.gen.feature.WorldGenBlockBlob;
-import net.minecraft.world.gen.feature.WorldGenIcePath;
-import net.minecraft.world.gen.feature.WorldGenIceSpike;
-import party.lemons.arcane.api.capability.PlayerData;
 import party.lemons.arcane.api.spell.Spell;
 import party.lemons.arcane.api.spell.SpellPage;
-import party.lemons.arcane.api.spell.SpellUtil;
 import party.lemons.arcane.entity.EntityPhysicsBlock;
 
 /**

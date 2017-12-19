@@ -94,15 +94,6 @@ public class SpellEarthWall extends Spell
 							break;
 						}
 					}
-
-					/////
-				/*	BlockPos finalPos = pos;
-					Runnable underBlock = () -> world.setBlockState(finalPos, Blocks.DIRT.getDefaultState());
-					ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
-					scheduler.schedule(underBlock, 1, TimeUnit.SECONDS);
-					scheduler.shutdown();*/
-					/////
-
 					pos = pos.offset(facing.rotateAround(EnumFacing.Axis.Y));
 					ii++;
 				}

@@ -2,6 +2,10 @@ package party.lemons.arcane.config;
 
 import net.minecraft.block.Block;
 import net.minecraftforge.common.config.Config;
+import net.minecraftforge.common.config.ConfigManager;
+import net.minecraftforge.fml.client.event.ConfigChangedEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.util.Arrays;
 
@@ -9,6 +13,7 @@ import java.util.Arrays;
  * Created by Sam on 19/12/2017.
  */
 @Config(modid = ArcaneConstants.MODID)
+@Mod.EventBusSubscriber
 public class ArcaneConfig
 {
 	@Config.Comment("Blocks effected by earth spells")
@@ -49,4 +54,12 @@ public class ArcaneConfig
 		return Arrays.stream(earth_blocks).anyMatch(x -> block.getRegistryName().toString().equalsIgnoreCase(x));
 	}
 
+	@SubscribeEvent
+	public static void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent event)
+	{
+		if (event.getModID().equals(ArcaneConstants.MODID))
+		{
+			ConfigManager.sync(ArcaneConstants.MODID, Config.Type.INSTANCE);
+		}
+	}
 }

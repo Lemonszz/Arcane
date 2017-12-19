@@ -1,7 +1,6 @@
 package party.lemons.arcane.api.spell;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -11,9 +10,6 @@ import party.lemons.arcane.api.capability.PlayerData;
 import party.lemons.arcane.client.ClientUtil;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import party.lemons.arcane.client.gui.GuiManaBar;
-import party.lemons.arcane.network.*;
-
-import java.util.ArrayList;
 
 /**
  * Created by Sam on 14/12/2017.
