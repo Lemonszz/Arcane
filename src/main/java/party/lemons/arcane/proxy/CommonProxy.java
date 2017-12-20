@@ -9,6 +9,7 @@ import net.minecraftforge.fml.common.registry.EntityRegistry;
 import party.lemons.arcane.Arcane;
 import party.lemons.arcane.api.capability.PlayerData;
 import party.lemons.arcane.config.ArcaneConstants;
+import party.lemons.arcane.entity.EntityArrowTurret;
 import party.lemons.arcane.entity.EntityFirestorm;
 import party.lemons.arcane.entity.EntityFirestormProjectile;
 import party.lemons.arcane.entity.EntityPhysicsBlock;
@@ -27,6 +28,7 @@ public class CommonProxy
 		EntityRegistry.registerModEntity(new ResourceLocation(ArcaneConstants.MODID + ":physicsblock"), EntityPhysicsBlock.class, "physicsblock", id++, Arcane.instance, 64, 3, true);
 		EntityRegistry.registerModEntity(new ResourceLocation(ArcaneConstants.MODID + ":firestormproj"), EntityFirestormProjectile.class, "firestormproj", id++, Arcane.instance, 64, 3, true);
 		EntityRegistry.registerModEntity(new ResourceLocation(ArcaneConstants.MODID + ":firestorm"), EntityFirestorm.class, "firestorm", id++, Arcane.instance, 64, 3, true);
+		EntityRegistry.registerModEntity(new ResourceLocation(ArcaneConstants.MODID + ":arrowturret"), EntityArrowTurret.class, "arrowturret", id++, Arcane.instance, 64, 3, true);
 	}
 
 	public void init(FMLInitializationEvent event)

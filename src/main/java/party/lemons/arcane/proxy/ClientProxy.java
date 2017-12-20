@@ -5,6 +5,8 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import party.lemons.arcane.client.KeyBindings;
+import party.lemons.arcane.entity.EntityArrowTurret;
+import party.lemons.arcane.entity.render.RenderArrowTurret;
 import party.lemons.arcane.entity.render.RenderFirestorm;
 import party.lemons.arcane.entity.EntityFirestormProjectile;
 import party.lemons.arcane.entity.EntityPhysicsBlock;
@@ -23,6 +25,7 @@ public class ClientProxy extends CommonProxy
 
 		RenderingRegistry.registerEntityRenderingHandler(EntityPhysicsBlock.class, RenderPhysicsBlock::new);
 		RenderingRegistry.registerEntityRenderingHandler(EntityFirestormProjectile.class, RenderFirestorm::new);
+		RenderingRegistry.registerEntityRenderingHandler(EntityArrowTurret.class, RenderArrowTurret::new);
 	}
 
 	@Override

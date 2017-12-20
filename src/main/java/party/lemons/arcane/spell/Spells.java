@@ -19,7 +19,8 @@ public class Spells
 	public static Spell fireball_1, fireball_2, fireball_3, fireball_4, fireball_5,
 						rock_throw, earth_wall, hole, earth_4, earth_5,
 						leaping,
-						fertilizer, photosynthesis;
+						fertilizer, photosynthesis,
+						summon_arrow_turret;
 
 	@SubscribeEvent
 	public static void registerSpells(RegistryEvent.Register<Spell> event)
@@ -39,6 +40,8 @@ public class Spells
 		fertilizer = new SpellBonemeal(SpellPages.FARMING, 1).setDrawStack(new ItemStack(Items.DYE, 1, 15)).setCastMana(40).setUnlocalizedName("fertilizer").setRegistryName("fertilizer");
 		photosynthesis = new SpellBonemeal(SpellPages.FARMING, 5).setUnlockCost(4).setDrawStack(new ItemStack(Blocks.DOUBLE_PLANT, 1, 0)).setCastMana(90).setUnlocalizedName("photosynthesis").setRegistryName("photosynthesis").setParents(fertilizer);
 
+		summon_arrow_turret = new SpellSummonArrowTurret(SpellPages.SUMMONING).setUnlockCost(4).setCastMana(90).setUnlocalizedName("arrow_turret").setRegistryName("arrow_turret");
+
 		event.getRegistry().registerAll(
 				fireball_1,
 				fireball_2,
@@ -52,7 +55,8 @@ public class Spells
 				earth_5,
 				leaping,
 				fertilizer,
-				photosynthesis
+				photosynthesis,
+				summon_arrow_turret
 		);
 	}
 }
