@@ -4,13 +4,12 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.client.config.GuiUtils;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.input.Keyboard;
 import party.lemons.arcane.api.capability.PlayerData;
 import party.lemons.arcane.api.spell.Spell;
@@ -19,9 +18,6 @@ import party.lemons.arcane.client.SpellUtilClient;
 import party.lemons.arcane.config.ArcaneConstants;
 import party.lemons.arcane.network.ArcaneNetwork;
 import party.lemons.arcane.network.PacketSendSelectedSpell;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Sam on 13/12/2017.
@@ -137,10 +133,7 @@ public class GuiRadialMenu extends GuiScreen
 
 	public static void drawRadialMenu(int mouseX, int mouseY)
 	{
-		String titleText = "";
-		String descriptionText = "";
-		String statusText = "";
-		String debugText = "";
+		Tooltip tooltip = new Tooltip();
 
 		Minecraft mc = Minecraft.getMinecraft();
 		ScaledResolution resolution = new ScaledResolution(mc);
@@ -184,25 +177,12 @@ public class GuiRadialMenu extends GuiScreen
 				Spell sp = data.getSelectedSpells()[i];
 				if(sp != null)
 				{
-					titleText = TextFormatting.LIGHT_PURPLE + sp.getLocalizedName();
-					descriptionText = "Description & stuff goes here :)";
-					if(!data.hasSpellUnlocked(sp))
-						statusText = TextFormatting.RED + "Locked";
-					if(mc.gameSettings.advancedItemTooltips)
-						debugText += TextFormatting.DARK_GRAY + sp.getRegistryName().toString();
+					tooltip = SpellUtilClient.createSpellTooltip(sp, data);
 				}
 			}
 			angle += step;
 		}
 
-		List<String> lines = new ArrayList<>();
-		if(!titleText.isEmpty()) { lines.add(titleText); }
-		if(!descriptionText.isEmpty()) { lines.add(descriptionText); }
-		if(!statusText.isEmpty()) { lines.add(statusText); }
-		if(!debugText.isEmpty()) { lines.add(debugText); }
-
-		ScaledResolution res = new ScaledResolution(mc);
-		if(lines.size() > 0)
-			GuiUtils.drawHoveringText(lines, 0, 0, res.getScaledWidth(), res.getScaledHeight(), 200, mc.fontRenderer);
+		tooltip.draw(10,10, mc.fontRenderer, mc.getRenderItem());
 	}
 }

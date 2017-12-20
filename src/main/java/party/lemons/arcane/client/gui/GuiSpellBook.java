@@ -3,11 +3,9 @@ package party.lemons.arcane.client.gui;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.client.config.GuiUtils;
 import org.lwjgl.opengl.GL11;
 import party.lemons.arcane.api.capability.PlayerData;
@@ -23,7 +21,6 @@ import javax.annotation.Nullable;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 /**
  * Created by Sam on 10/12/2017.
@@ -113,10 +110,7 @@ public class GuiSpellBook extends GuiScreen
 	@Override
 	public void drawScreen(int mouseX, int mouseY, float partialTicks)
 	{
-		String titleText = "";
-		String descriptionText = "";
-		String statusText = "";
-		String debugText = "";
+		Tooltip tooltip = new Tooltip();
 
 		float sZ = itemRender.zLevel;
 		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
@@ -148,12 +142,7 @@ public class GuiSpellBook extends GuiScreen
 				if(mouseX >= xx && mouseX <= xx + 24 && mouseY >= yy && mouseY <= yy + 24)
 				{
 					Spell sp = selectedSpells[a];
-					titleText = TextFormatting.LIGHT_PURPLE + sp.getLocalizedName();
-					descriptionText = I18n.format(sp.getUnlocalizedDescription());
-					if(!data.hasSpellUnlocked(sp))
-						statusText = TextFormatting.RED + "Locked";
-					if(mc.gameSettings.advancedItemTooltips)
-						debugText += TextFormatting.DARK_GRAY + sp.getRegistryName().toString();
+					tooltip = SpellUtilClient.createSpellTooltip(sp, data);
 				}
 			}
 			this.mc.getTextureManager().bindTexture(_guiTexture);
@@ -193,12 +182,8 @@ public class GuiSpellBook extends GuiScreen
 					if(mouseX >= xp && mouseX <= xp + 26 && mouseY >= yp && mouseY <= yp + 26)
 					{
 						Spell sp = spellCache.get(selectedPage).get(ind);
-						titleText = TextFormatting.LIGHT_PURPLE + sp.getLocalizedName();
-						descriptionText = I18n.format(sp.getUnlocalizedDescription());
-						if(!data.hasSpellUnlocked(sp))
-							statusText = TextFormatting.RED + "Unlock Cost: " + sp.getUnlockCost();
-						if(mc.gameSettings.advancedItemTooltips)
-							debugText += TextFormatting.DARK_GRAY + sp.getRegistryName().toString();
+						tooltip = SpellUtilClient.createSpellTooltip(sp, data);
+
 
 						GL11.glColor3f(1,1,1);
 						this.mc.getTextureManager().bindTexture(_guiTexture);
@@ -255,15 +240,7 @@ public class GuiSpellBook extends GuiScreen
 
 		itemRender.zLevel = sZ;
 
-		List<String> lines = new ArrayList<>();
-		if(!titleText.isEmpty()) { lines.add(titleText); }
-		if(!descriptionText.isEmpty()) { lines.add(descriptionText); }
-		if(!statusText.isEmpty()) { lines.add(statusText); }
-		if(!debugText.isEmpty()) { lines.add(debugText); }
-
-		ScaledResolution res = new ScaledResolution(mc);
-		if(lines.size() > 0)
-			GuiUtils.drawHoveringText(lines, mouseX, mouseY, res.getScaledWidth(), res.getScaledHeight(), 200, fontRenderer);
+		tooltip.draw(mouseX, mouseY, fontRenderer, itemRender);
 
 		ArrayList<String> str = new ArrayList<>();
 		str.add(I18n.format("magic.requiredxp") + ": " + Minecraft.getMinecraft().player.experienceLevel  +"/10");

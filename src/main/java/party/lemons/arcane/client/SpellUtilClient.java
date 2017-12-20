@@ -7,10 +7,14 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.fml.relauncher.Side;
+import party.lemons.arcane.api.capability.PlayerData;
 import party.lemons.arcane.api.spell.Spell;
+import party.lemons.arcane.client.gui.Tooltip;
 import party.lemons.arcane.config.ArcaneConstants;
 
 /**
@@ -48,5 +52,25 @@ public class SpellUtilClient
 				Minecraft.getMinecraft().getRenderItem().renderItemAndEffectIntoGUI(spell.getIconStack(), xCoord, yCoord);
 				break;
 		}
+	}
+
+	public static Tooltip createSpellTooltip(Spell sp)
+	{
+		return createSpellTooltip(sp, Minecraft.getMinecraft().player.getCapability(PlayerData.CAPABILITY, null));
+	}
+
+	public static Tooltip createSpellTooltip(Spell sp, PlayerData data)
+	{
+		Tooltip tooltip = new Tooltip();
+
+		tooltip.add(TextFormatting.LIGHT_PURPLE + sp.getLocalizedName());
+		tooltip.add(TextFormatting.BLUE + I18n.format("magic.manacost") + ": " + (int)sp.getCastMana());
+		tooltip.add(I18n.format(sp.getUnlocalizedDescription()));
+		if(!data.hasSpellUnlocked(sp))
+			tooltip.add(TextFormatting.RED + I18n.format("magic.locked") + ": " + sp.getUnlockCost());
+		if(Minecraft.getMinecraft().gameSettings.advancedItemTooltips)
+			tooltip.add(TextFormatting.DARK_GRAY + sp.getRegistryName().toString());
+
+		return tooltip;
 	}
 }

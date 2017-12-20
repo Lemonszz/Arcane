@@ -50,3 +50,5 @@ spell.arrow_turret.desc=Assemble a spectral turret to defend your riches
 magic.storedlevels=Points
 magic.requiredxp=Required Levels
 magic.maxmana=Mana
+magic.manacost=Cast Mana
+magic.locked=Unlock Cost
