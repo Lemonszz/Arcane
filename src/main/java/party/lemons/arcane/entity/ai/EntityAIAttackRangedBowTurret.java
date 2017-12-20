@@ -34,7 +34,7 @@ public class EntityAIAttackRangedBowTurret<T extends EntityTurret & IRangedAttac
 	 */
 	public boolean shouldExecute()
 	{
-		return this.entity.getAttackTarget() == null ? false : this.isBowInMainhand();
+		return this.entity.getAttackTarget() != null && this.isBowInMainhand();
 	}
 
 	protected boolean isBowInMainhand()
@@ -56,7 +56,7 @@ public class EntityAIAttackRangedBowTurret<T extends EntityTurret & IRangedAttac
 	public void startExecuting()
 	{
 		super.startExecuting();
-		((IRangedAttackMob) this.entity).setSwingingArms(true);
+		this.entity.setSwingingArms(true);
 	}
 
 	/**
@@ -65,7 +65,7 @@ public class EntityAIAttackRangedBowTurret<T extends EntityTurret & IRangedAttac
 	public void resetTask()
 	{
 		super.resetTask();
-		((IRangedAttackMob) this.entity).setSwingingArms(false);
+		this.entity.setSwingingArms(false);
 		this.seeTime = 0;
 		this.attackTime = -1;
 		this.entity.resetActiveHand();
@@ -111,7 +111,7 @@ public class EntityAIAttackRangedBowTurret<T extends EntityTurret & IRangedAttac
 					if(i >= 20)
 					{
 						this.entity.resetActiveHand();
-						((IRangedAttackMob) this.entity).attackEntityWithRangedAttack(entitylivingbase, ItemBow.getArrowVelocity(i));
+						this.entity.attackEntityWithRangedAttack(entitylivingbase, ItemBow.getArrowVelocity(i));
 						this.attackTime = this.attackCooldown;
 					}
 				}

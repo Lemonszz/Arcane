@@ -35,12 +35,12 @@ public class GuiManaBar extends Gui
 
 		if(event.getType() == RenderGameOverlayEvent.ElementType.ARMOR  && Minecraft.getMinecraft().player.getTotalArmorValue() > 0)
 		{
-			height =  GuiIngameForge.left_height + 0;
+			height = GuiIngameForge.left_height;
 			pos=  true;
 		}
 		if(event.getType() == RenderGameOverlayEvent.ElementType.AIR && Minecraft.getMinecraft().player.getAir() < 300)
 		{
-			height =  GuiIngameForge.right_height + 0;
+			height = GuiIngameForge.right_height;
 			pos = true;
 		}
 
@@ -49,12 +49,6 @@ public class GuiManaBar extends Gui
 
 		if(drawTime > 0 || GuiRadialMenu.on)
 			drawBar(event.getResolution());
-	}
-
-	@SubscribeEvent
-	public static void onGuiDraw(RenderGameOverlayEvent.Post event)
-	{
-
 	}
 
 	public static void drawBar(ScaledResolution resolution)

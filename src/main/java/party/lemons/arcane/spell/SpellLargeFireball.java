@@ -21,8 +21,7 @@ public class SpellLargeFireball extends SpellFireball
 	EntityFireball createFireball(Spell spell, EntityPlayer player)
 	{
 		Vec3d vec = player.getLookVec();
-		EntityFireball ball = new EntityLargeFireball(player.world, player, vec.x, vec.y, vec.z);
-		return ball;
+		return new EntityLargeFireball(player.world, player, vec.x, vec.y, vec.z);
 	}
 
 }

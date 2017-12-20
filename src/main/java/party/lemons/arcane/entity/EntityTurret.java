@@ -2,7 +2,6 @@ package party.lemons.arcane.entity;
 
 import com.google.common.base.Optional;
 import net.minecraft.entity.EntityCreature;
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTUtil;
@@ -19,7 +18,7 @@ import javax.annotation.Nullable;
  */
 public abstract class EntityTurret extends EntityCreature implements IRangedAttackMob
 {
-	private static final DataParameter<Optional<BlockPos>> TARGET = EntityDataManager.<Optional<BlockPos>>createKey(EntityTurret.class, DataSerializers.OPTIONAL_BLOCK_POS);
+	private static final DataParameter<Optional<BlockPos>> TARGET = EntityDataManager.createKey(EntityTurret.class, DataSerializers.OPTIONAL_BLOCK_POS);
 	protected int shootTime = -1;
 	protected int maxShootTime = 1;
 

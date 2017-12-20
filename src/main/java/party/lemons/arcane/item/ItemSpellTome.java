@@ -58,11 +58,11 @@ public class ItemSpellTome extends Item
 			{
 				data.unlockSpell(spell);
 				stack.shrink(1);
-				return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, playerIn.getHeldItem(handIn));
+				return new ActionResult<>(EnumActionResult.SUCCESS, playerIn.getHeldItem(handIn));
 			}
 		}
 
-		return new ActionResult<ItemStack>(EnumActionResult.PASS, playerIn.getHeldItem(handIn));
+		return new ActionResult<>(EnumActionResult.PASS, playerIn.getHeldItem(handIn));
 	}
 
 	@Override

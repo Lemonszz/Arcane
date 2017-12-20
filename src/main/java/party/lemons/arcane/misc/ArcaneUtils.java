@@ -9,7 +9,6 @@ public class ArcaneUtils
 {
 	public static <T> T choose(Random random, T... items)
 	{
-		T chosen = items[random.nextInt(items.length)];
-		return chosen;
+		return items[random.nextInt(items.length)];
 	}
 }

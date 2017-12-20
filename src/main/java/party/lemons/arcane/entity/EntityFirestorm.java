@@ -30,7 +30,7 @@ public class EntityFirestorm extends EntityAreaEffectCloud
 	{
 		super.onUpdate();
 
-		List<EntityLivingBase> list = this.world.<EntityLivingBase>getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox());
+		List<EntityLivingBase> list = this.world.getEntitiesWithinAABB(EntityLivingBase.class, this.getEntityBoundingBox());
 
 		if (!list.isEmpty())
 		{

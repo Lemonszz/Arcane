@@ -52,7 +52,7 @@ public interface PlayerData
 
 	class Impl implements PlayerData
 	{
-		private List<Spell> spells = spells = new ArrayList<Spell>();
+		private List<Spell> spells = new ArrayList<Spell>();
 		private Spell[] selectedSpells = new Spell[6];
 		private int selectedIndex = 0;
 		private long holdTime = -1;
@@ -92,8 +92,8 @@ public interface PlayerData
 			Spell[] pars = spell.getParents();
 			if(pars != null)
 			{
-				for(int i = 0; i < pars.length; i++)
-					if(!hasSpellUnlocked(pars[i]))
+				for(Spell par : pars)
+					if(!hasSpellUnlocked(par))
 						return false;
 			}
 			return true;
@@ -293,7 +293,7 @@ public interface PlayerData
 		@Override
 		public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing)
 		{
-			return capability == CAPABILITY ? CAPABILITY.<T>cast(instance) : null;
+			return capability == CAPABILITY ? CAPABILITY.cast(instance) : null;
 		}
 
 		@Override

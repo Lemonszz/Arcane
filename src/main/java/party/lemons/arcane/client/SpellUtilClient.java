@@ -26,7 +26,7 @@ public class SpellUtilClient
 		switch(spell.getIconType())
 		{
 			case TEXTURE:
-				Minecraft.getMinecraft().getTextureManager().bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);;
+				Minecraft.getMinecraft().getTextureManager().bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 				GlStateManager.color(1,1,1);
 				GlStateManager.enableBlend();
 				GlStateManager.enableAlpha();
@@ -37,10 +37,10 @@ public class SpellUtilClient
 				Tessellator tessellator = Tessellator.getInstance();
 				BufferBuilder bufferbuilder = tessellator.getBuffer();
 				bufferbuilder.begin(7, DefaultVertexFormats.POSITION_TEX);
-				bufferbuilder.pos((double)(xCoord + 0), (double)(yCoord + heightIn), (double)zLevel).tex((double)textureSprite.getMinU(), (double)textureSprite.getMaxV()).endVertex();
+				bufferbuilder.pos((double)(xCoord), (double)(yCoord + heightIn), (double)zLevel).tex((double)textureSprite.getMinU(), (double)textureSprite.getMaxV()).endVertex();
 				bufferbuilder.pos((double)(xCoord + widthIn), (double)(yCoord + heightIn), (double)zLevel).tex((double)textureSprite.getMaxU(), (double)textureSprite.getMaxV()).endVertex();
-				bufferbuilder.pos((double)(xCoord + widthIn), (double)(yCoord + 0), (double)zLevel).tex((double)textureSprite.getMaxU(), (double)textureSprite.getMinV()).endVertex();
-				bufferbuilder.pos((double)(xCoord + 0), (double)(yCoord + 0), (double)zLevel).tex((double)textureSprite.getMinU(), (double)textureSprite.getMinV()).endVertex();
+				bufferbuilder.pos((double)(xCoord + widthIn), (double)(yCoord), (double)zLevel).tex((double)textureSprite.getMaxU(), (double)textureSprite.getMinV()).endVertex();
+				bufferbuilder.pos((double)(xCoord), (double)(yCoord), (double)zLevel).tex((double)textureSprite.getMinU(), (double)textureSprite.getMinV()).endVertex();
 				tessellator.draw();
 				break;
 			case ITEMSTACK:

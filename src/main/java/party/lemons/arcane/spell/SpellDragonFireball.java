@@ -21,8 +21,7 @@ public class SpellDragonFireball extends SpellFireball
 	EntityFireball createFireball(Spell spell, EntityPlayer player)
 	{
 		Vec3d vec = player.getLookVec();
-		EntityFireball ball = new EntityFirestormProjectile(player.world, player, vec.x, vec.y, vec.z);
-		return ball;
+		return new EntityFirestormProjectile(player.world, player, vec.x, vec.y, vec.z);
 	}
 
 }

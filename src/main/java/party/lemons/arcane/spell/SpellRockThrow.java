@@ -45,10 +45,4 @@ public class SpellRockThrow extends Spell
 		}
 		useMana(player);
 	}
-
-	@Override
-	public void castSpellHold(Spell spell, EntityPlayer player, long holdTime)
-	{
-
-	}
 }

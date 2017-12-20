@@ -6,7 +6,7 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.util.ResourceLocation;;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.fml.client.config.GuiUtils;
 import org.lwjgl.opengl.GL11;
@@ -374,12 +374,11 @@ public class GuiSpellBook extends GuiScreen
 		int gapSize = 25;
 		int width = 23;
 		int height = 23;
-		int xx = startX;
 		int yy = startY;
 
 		for(int b = 0; b < 6; b++)
 		{
-			if(mouseX >= xx && mouseX <= xx + width)
+			if(mouseX >= startX && mouseX <= startX + width)
 			{
 				if(mouseY >= yy && mouseY <= yy + height)
 				{

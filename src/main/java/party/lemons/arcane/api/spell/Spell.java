@@ -172,6 +172,6 @@ public class Spell extends IForgeRegistryEntry.Impl<Spell> implements Comparable
 	public enum IconType
 	{
 		TEXTURE,
-		ITEMSTACK;
+		ITEMSTACK
 	}
 }

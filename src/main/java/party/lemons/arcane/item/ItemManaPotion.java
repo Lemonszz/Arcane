@@ -51,7 +51,7 @@ public class ItemManaPotion extends ItemFood
 	{
 		ItemStack itemstack = playerIn.getHeldItem(handIn);
 		playerIn.setActiveHand(handIn);
-		return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemstack);
+		return new ActionResult<>(EnumActionResult.SUCCESS, itemstack);
 	}
 
 	public int getMaxItemUseDuration(ItemStack stack)

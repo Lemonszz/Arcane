@@ -149,8 +149,8 @@ public class GuiRadialMenu extends GuiScreen
 		int radius = 50;
 		int width = (radius * 2) + 24;
 
-		int dX = (resolution.getScaledWidth() / 2) - (radius * 1) - 24;
-		int dY = (resolution.getScaledHeight() / 2)- (radius * 1) - 24;
+		int dX = (resolution.getScaledWidth() / 2) - (radius) - 24;
+		int dY = (resolution.getScaledHeight() / 2)- (radius) - 24;
 
 		Spell[] spells = data.getSelectedSpells();
 		double step = (2 * Math.PI) / 6;

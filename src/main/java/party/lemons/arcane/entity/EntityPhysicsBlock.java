@@ -5,7 +5,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockFalling;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.MoverType;
 import net.minecraft.entity.item.EntityFallingBlock;
@@ -18,13 +17,14 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.datafix.DataFixer;
-import net.minecraft.util.math.*;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -42,7 +42,7 @@ public class EntityPhysicsBlock extends EntityFallingBlock
 	protected static final DataParameter<BlockPos> ORIGIN = EntityDataManager.createKey(EntityPhysicsBlock.class, DataSerializers.BLOCK_POS);
 	private static final DataParameter<Optional<IBlockState>> STATE = EntityDataManager.createKey(EntityPhysicsBlock.class, DataSerializers.OPTIONAL_BLOCK_STATE);
 	public static final DataParameter<Boolean> FIRED = EntityDataManager.createKey(EntityPhysicsBlock.class, DataSerializers.BOOLEAN);
-	protected static final DataParameter<Optional<UUID>> OWNER_UNIQUE_ID = EntityDataManager.<Optional<UUID>>createKey(EntityTameable.class, DataSerializers.OPTIONAL_UNIQUE_ID);
+	protected static final DataParameter<Optional<UUID>> OWNER_UNIQUE_ID = EntityDataManager.createKey(EntityTameable.class, DataSerializers.OPTIONAL_UNIQUE_ID);
 
 	int age = 0;
 	int fallTime = 0;
@@ -94,7 +94,7 @@ public class EntityPhysicsBlock extends EntityFallingBlock
 	@SideOnly(Side.CLIENT)
 	public BlockPos getOrigin()
 	{
-		return (BlockPos)this.dataManager.get(ORIGIN);
+		return this.dataManager.get(ORIGIN);
 	}
 
 	/**
@@ -109,7 +109,7 @@ public class EntityPhysicsBlock extends EntityFallingBlock
 	protected void entityInit()
 	{
 		this.dataManager.register(ORIGIN, BlockPos.ORIGIN);
-		this.dataManager.register(STATE, Optional.<IBlockState>absent());
+		this.dataManager.register(STATE, Optional.absent());
 		this.dataManager.register(FIRED, false);
 		this.dataManager.register(OWNER_UNIQUE_ID, Optional.absent());
 	}
@@ -262,9 +262,9 @@ public class EntityPhysicsBlock extends EntityFallingBlock
 						{
 							this.setDead();
 
-							if (true)
+							if (true)	// TODO: fix this shit
 							{
-								if (this.world.mayPlace(block, blockpos1, true, EnumFacing.UP, (Entity)null) && (flag1 || !BlockFalling.canFallThrough(this.world.getBlockState(blockpos1.down()))) && this.world.setBlockState(blockpos1, this.getState(), 3))
+								if (this.world.mayPlace(block, blockpos1, true, EnumFacing.UP, null) && (flag1 || !BlockFalling.canFallThrough(this.world.getBlockState(blockpos1.down()))) && this.world.setBlockState(blockpos1, this.getState(), 3))
 								{
 									if (block instanceof BlockFalling)
 									{
@@ -299,7 +299,7 @@ public class EntityPhysicsBlock extends EntityFallingBlock
 									this.entityDropItem(new ItemStack(block.getItemDropped(getState(), rand, 0), 1, block.damageDropped(this.getState())), 0.0F);
 								}
 							}
-							else if (block instanceof BlockFalling)
+							else
 							{
 								((BlockFalling)block).onBroken(this.world, blockpos1);
 							}
@@ -330,10 +330,6 @@ public class EntityPhysicsBlock extends EntityFallingBlock
 	public void fall(float distance, float damageMultiplier)
 	{
 
-	}
-
-	public static void registerFixesFallingBlock(DataFixer fixer)
-	{
 	}
 
 	/**

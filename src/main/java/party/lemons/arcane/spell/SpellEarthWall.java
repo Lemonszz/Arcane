@@ -12,7 +12,6 @@ import net.minecraft.world.World;
 import party.lemons.arcane.api.spell.Spell;
 import party.lemons.arcane.api.spell.SpellPage;
 import party.lemons.arcane.config.ArcaneConfig;
-import party.lemons.arcane.entity.EntityArrowTurret;
 import party.lemons.arcane.entity.EntityPhysicsBlock;
 import party.lemons.arcane.misc.ArcaneUtils;
 
