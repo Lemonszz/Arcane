@@ -9,20 +9,44 @@ item.spell_tome.name=Spell Tome
 item.mana_potion.name=Mana Potion
 
 spell.fireball_1.name=Flame
-spell.fireball_2.name=Scald
+spell.fireball_1.desc=A spray of fire
+
+spell.fireball_2.name=Scorch
+spell.fireball_2.desc=A bigger spray of fire
+
 spell.fireball_3.name=Fire Bolt
+spell.fireball_3.desc=Shoot a fireball
+
 spell.fireball_4.name=Fire Storm
+spell.fireball_4.desc=A bigger, badder fireball
+
 spell.fireball_5.name=Inferno
+spell.fireball_5.desc=Obliterate your enemies
+
+spell.hole.name=Emergency Hole
+spell.hole.desc=Quickly hide yourself underground
 
 spell.rock_throw.name=Rock Throw
-spell.earth_2.name=Tremor
-spell.earth_3.name=Aftershock
+spell.rock_throw.desc=Hold and aim a block to crush those who get in your way
+
+spell.earth_wall.name=Earth Wall
+spell.earth_wall.desc=Sprout the earth from the ground
+
 spell.earth_4.name=Quake
 spell.earth_5.name=Eruption
 
 spell.leaping.name=Leaping
+spell.leaping.desc=Take a leap of faith
+
 spell.fertilizer.name=Fertilizer
+spell.fertilizer.desc=A burst of growth
+
 spell.photosynthesis.name=Photosynthesis
+spell.photosynthesis.desc=Farming has never been so easy!
+
+spell.arrow_turret.name=Spectral Turret
+spell.arrow_turret.desc=Assemble a spectral turret to defend your riches
+
 magic.storedlevels=Points
 magic.requiredxp=Required Levels
 magic.maxmana=Mana
