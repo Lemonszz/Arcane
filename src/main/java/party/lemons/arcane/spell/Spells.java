@@ -32,8 +32,8 @@ public class Spells
 		fireball_5 = new SpellDragonFireball(SpellPages.ELEMENTAL).setCastMana(150).setUnlockCost(8).setUnlocalizedName("fireball_5").setRegistryName("fireball_5").setParents(fireball_4);
 
 		rock_throw = new SpellRockThrow(SpellPages.ELEMENTAL, 3).setUnlockCost(2).setCastMana(40).setUnlocalizedName("rock_throw").setRegistryName("rock_throw");
-		earth_wall = new SpellEarthWall(SpellPages.ELEMENTAL).setUnlocalizedName("earth_wall").setRegistryName("earth_wall").setParents(rock_throw);
-		hole = new SpellEmergencyHole(SpellPages.ELEMENTAL).setDrawStack(new ItemStack(Items.STONE_SHOVEL)).setUnlocalizedName("hole").setRegistryName("hole");
+		earth_wall = new SpellEarthWall(SpellPages.ELEMENTAL).setUnlockCost(2).setCastMana(35).setUnlocalizedName("earth_wall").setRegistryName("earth_wall").setParents(rock_throw);
+		hole = new SpellEmergencyHole(SpellPages.ELEMENTAL).setCastMana(30).setDrawStack(new ItemStack(Items.STONE_SHOVEL)).setUnlocalizedName("hole").setRegistryName("hole");
 		earth_4 = new Spell(SpellPages.ELEMENTAL).setUnlocalizedName("earth_4").setRegistryName("earth_4").setParents(hole);
 		earth_5 = new Spell(SpellPages.ELEMENTAL).setUnlocalizedName("earth_5").setRegistryName("earth_5").setParents(earth_4);
 		leaping = new SpellLeap(SpellPages.ELEMENTAL, 1).setCastMana(20).setUnlocalizedName("leaping").setRegistryName("leaping");
