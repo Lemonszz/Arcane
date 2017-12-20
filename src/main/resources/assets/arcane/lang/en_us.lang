@@ -28,6 +28,7 @@ spell.hole.desc=Quickly hide yourself underground
 
 spell.rock_throw.name=Rock Throw
 spell.rock_throw.desc=Hold and aim a block to crush those who get in your way
+spell.rock_throw.fail=You can't lift this block!
 
 spell.earth_wall.name=Earth Wall
 spell.earth_wall.desc=Sprout the earth from the ground

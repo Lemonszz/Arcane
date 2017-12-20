@@ -349,6 +349,13 @@ public class EntityPhysicsBlock extends EntityFallingBlock
 		setState(Block.getStateById(compound.getInteger("st")));
 		age = compound.getInteger("age");
 
+		String pl = "";
+		if (compound.hasKey("player", 8))
+		{
+			pl = compound.getString("player");
+		}
+		UUID playerID = UUID.fromString(pl);
+		dataManager.set(OWNER_UNIQUE_ID, Optional.fromNullable(playerID));
 		super.readFromNBT(compound);
 	}
 
@@ -360,6 +367,7 @@ public class EntityPhysicsBlock extends EntityFallingBlock
 
 		compound.setInteger("st", Block.getStateId(getState()));
 		compound.setInteger("age", age);
+		compound.setString("player", dataManager.get(OWNER_UNIQUE_ID).get().toString());
 
 		return super.writeToNBT(compound);
 	}

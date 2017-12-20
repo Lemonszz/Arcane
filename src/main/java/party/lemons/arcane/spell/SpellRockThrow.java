@@ -4,8 +4,10 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.text.TextComponentTranslation;
 import party.lemons.arcane.api.spell.Spell;
 import party.lemons.arcane.api.spell.SpellPage;
+import party.lemons.arcane.config.ArcaneConfig;
 import party.lemons.arcane.entity.EntityPhysicsBlock;
 
 /**
@@ -37,12 +39,20 @@ public class SpellRockThrow extends Spell
 			if(ray != null)
 			{
 				IBlockState state = player.world.getBlockState(ray.getBlockPos());
-				EntityPhysicsBlock block = new EntityPhysicsBlock(player.world, ray.getBlockPos().getX() + 0.5F, ray.getBlockPos().getY(), ray.getBlockPos().getZ()+ 0.5F, player);
-				block.setState(state);
-				player.world.setBlockToAir(ray.getBlockPos());
-				player.world.spawnEntity(block);
+				if(ArcaneConfig.isEarthBlock(state.getBlock()))
+				{
+					EntityPhysicsBlock block = new EntityPhysicsBlock(player.world, ray.getBlockPos().getX() + 0.5F, ray.getBlockPos().getY(), ray.getBlockPos().getZ() + 0.5F, player);
+					block.setState(state);
+					player.world.setBlockToAir(ray.getBlockPos());
+					player.world.spawnEntity(block);
+
+					useMana(player);
+				}
+				else
+				{
+					player.sendStatusMessage(new TextComponentTranslation("spell.rock_throw.fail"), true);
+				}
 			}
 		}
-		useMana(player);
 	}
 }
