@@ -46,6 +46,7 @@ public class EntityPhysicsBlock extends EntityFallingBlock
 
 	int age = 0;
 	int fallTime = 0;
+	private boolean noClipSetting;
 
 	public EntityPhysicsBlock(World worldIn)
 	{
@@ -194,6 +195,14 @@ public class EntityPhysicsBlock extends EntityFallingBlock
 		if(dataManager.get(FIRED))
 		{
 			Block block = getState().getBlock();
+			if(noClipSetting)
+			{
+				if(motionY > -0.3)
+					noClip= true;
+				else
+					noClip = false;
+			}
+
 
 			if (getState().getMaterial() == Material.AIR)
 			{
@@ -325,6 +334,11 @@ public class EntityPhysicsBlock extends EntityFallingBlock
 				e.attackEntityFrom(DamageSource.causePlayerDamage((EntityPlayer) getOwner()), amount);
 			}
 		}
+	}
+
+	public void setNoClipSetting()
+	{
+		this.noClipSetting = true;
 	}
 
 	public void fall(float distance, float damageMultiplier)

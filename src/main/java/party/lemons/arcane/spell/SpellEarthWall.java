@@ -60,6 +60,7 @@ public class SpellEarthWall extends Spell
 							float yOffset = 0.24161F * (3 - i);
 							IBlockState st = world.getBlockState(enPos);
 							EntityPhysicsBlock block = new EntityPhysicsBlock(world, enPos.getX() + 0.5, yOffset + (enPos.getY() + 0.5), enPos.getZ() + 0.5, player);
+							block.setNoClipSetting();
 							block.setState(st);
 							block.getDataManager().set(EntityPhysicsBlock.FIRED, true);
 							block.motionX = 0;
