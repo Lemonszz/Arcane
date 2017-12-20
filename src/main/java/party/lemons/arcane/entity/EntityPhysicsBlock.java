@@ -138,12 +138,12 @@ public class EntityPhysicsBlock extends EntityFallingBlock
 
 	public void onUpdate()
 	{
-		for(int i = 0; i < 2; i++)
+		for(int i = 0; i < 5; i++)
 		{
 			float x1 = 0.5F + (float) (posX - world.rand.nextFloat());
 			float y1 = (float) (posY + world.rand.nextFloat());
 			float z1 = 0.5F + (float) (posZ - world.rand.nextFloat());
-			world.spawnParticle(EnumParticleTypes.BLOCK_DUST, x1, y1, z1, 0, 0, 0, Block.getStateId(getState()));
+			world.spawnParticle(EnumParticleTypes.BLOCK_DUST, x1, y1, z1, (-0.5 + rand.nextFloat()) / 3, 0, (-0.5 + rand.nextFloat()) / 3, Block.getStateId(getState()));
 		}
 
 		EntityPlayer player = (EntityPlayer) getOwner();
