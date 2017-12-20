@@ -12,12 +12,10 @@ import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
@@ -43,6 +41,11 @@ public class EntityPhysicsBlock extends EntityFallingBlock
 	private static final DataParameter<Optional<IBlockState>> STATE = EntityDataManager.createKey(EntityPhysicsBlock.class, DataSerializers.OPTIONAL_BLOCK_STATE);
 	public static final DataParameter<Boolean> FIRED = EntityDataManager.createKey(EntityPhysicsBlock.class, DataSerializers.BOOLEAN);
 	protected static final DataParameter<Optional<UUID>> OWNER_UNIQUE_ID = EntityDataManager.createKey(EntityTameable.class, DataSerializers.OPTIONAL_UNIQUE_ID);
+
+	final int PARTICLE_AMOUNT  = 5;
+	final int MIN_AGE_FOR_HOLD = 2;
+	final int HOLDING_DAMAGE = 2;
+	final int FIRED_DAMAGE = 5;
 
 	int age = 0;
 	int fallTime = 0;
@@ -139,188 +142,168 @@ public class EntityPhysicsBlock extends EntityFallingBlock
 
 	public void onUpdate()
 	{
-		for(int i = 0; i < 5; i++)
+		EntityPlayer player = (EntityPlayer) getOwner();
+		age++;
+		boolean hasBeenFired = dataManager.get(FIRED);
+
+		createBlockParticles();
+
+		if(!hasBeenFired && age > MIN_AGE_FOR_HOLD)
+		{
+			if(player != null)
+				updateHolding(player);
+			else
+				dataManager.set(FIRED, true);
+		}
+		else if(hasBeenFired)
+		{
+			updateFired();
+		}
+	}
+
+	public void updateHolding(EntityPlayer player)
+	{
+		PlayerData data = player.getCapability(PlayerData.CAPABILITY, null);
+		if(data.isHoldingCast() && !dataManager.get(FIRED))
+		{
+			this.noClip = true;
+
+			Vec3d look = player.getLookVec();
+			Vec3d eye = player.getPositionEyes(1.0F);
+			Vec3d pos = eye.addVector(look.x * 3, look.y * 3, look.z * 3);
+
+			this.prevPosX = this.posX;
+			this.prevPosY = this.posY;
+			this.prevPosZ = this.posZ;
+
+			float a = ((float)age) / 10;
+			this.posX = pos.x;
+			this.posY = pos.y  - 0.25F + (-0.1 + (Math.sin(a) / 8)) ;
+			this.posZ = pos.z;
+
+			this.setPosition(posX, posY, posZ);
+			damageEntities(HOLDING_DAMAGE);
+		}
+		else
+		{
+			if(!dataManager.get(FIRED))
+			{
+				Vec3d look = player.getLookVec();
+				this.noClip = false;
+				this.motionX = look.x / 1.25;
+				this.motionY = look.y;
+				this.motionZ = look.z / 1.25;
+				dataManager.set(FIRED, true);
+			}
+		}
+	}
+
+	public void updateFired()
+	{
+		Block block = getState().getBlock();
+		if(noClipSetting)
+		{
+			if(motionY > -0.3)
+				noClip= true;
+			else
+				noClip = false;
+		}
+
+		if (getState().getMaterial() == Material.AIR)
+		{
+			this.setDead();
+		}
+		else
+		{
+			this.prevPosX = this.posX;
+			this.prevPosY = this.posY;
+			this.prevPosZ = this.posZ;
+			fallTime++;
+
+			if (!this.hasNoGravity())
+			{
+				this.motionY -= 0.03999999910593033D;
+			}
+
+			this.move(MoverType.SELF, this.motionX, this.motionY, this.motionZ);
+
+			if (!this.world.isRemote)
+			{
+				BlockPos entityPos = new BlockPos(this);
+				boolean isConcrete = getState().getBlock() == Blocks.CONCRETE_POWDER;
+				boolean isConcreteInWater = isConcrete && this.world.getBlockState(entityPos).getMaterial() == Material.WATER;
+				double motionSq = this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ;
+
+				if (isConcrete && motionSq > 1.0D)
+				{
+					RayTraceResult raytraceresult = this.world.rayTraceBlocks(new Vec3d(this.prevPosX, this.prevPosY, this.prevPosZ), new Vec3d(this.posX, this.posY, this.posZ), true);
+
+					if (raytraceresult != null && this.world.getBlockState(raytraceresult.getBlockPos()).getMaterial() == Material.WATER)
+					{
+						entityPos = raytraceresult.getBlockPos();
+						isConcreteInWater = true;
+					}
+				}
+
+				if (!this.onGround && !isConcreteInWater)
+				{
+					if (this.fallTime > 100 && !this.world.isRemote && (entityPos.getY() < 1 || entityPos.getY() > 256) || this.fallTime > 600)
+					{
+						if (this.shouldDropItem && this.world.getGameRules().getBoolean("doEntityDrops"))
+						{
+							this.entityDropItem(new ItemStack(block.getItemDropped(getState(), rand, 0), 1, block.damageDropped(this.getState())), 0.0F);
+						}
+						this.setDead();
+					}
+				}
+				else
+				{
+					IBlockState iblockstate = this.world.getBlockState(entityPos);
+
+					if (this.world.isAirBlock(new BlockPos(this.posX, this.posY - 0.009999999776482582D, this.posZ)))
+						if (!isConcreteInWater && BlockFalling.canFallThrough(this.world.getBlockState(new BlockPos(this.posX, this.posY - 0.009999999776482582D, this.posZ))))
+						{
+							this.onGround = false;
+							return;
+						}
+
+					this.motionX *= 0.699999988079071D;
+					this.motionZ *= 0.699999988079071D;
+					this.motionY *= -0.5D;
+
+					if (iblockstate.getBlock() != Blocks.PISTON_EXTENSION)
+					{
+						this.setDead();
+						if (this.world.mayPlace(block, entityPos, true, EnumFacing.UP, null) && (isConcreteInWater || !BlockFalling.canFallThrough(this.world.getBlockState(entityPos.down()))) && this.world.setBlockState(entityPos, this.getState(), 3))
+						{
+							if (block instanceof BlockFalling)
+							{
+								((BlockFalling)block).onEndFalling(this.world, entityPos, this.getState(), iblockstate);
+							}
+						}
+						else if (this.shouldDropItem && this.world.getGameRules().getBoolean("doEntityDrops"))
+						{
+							this.entityDropItem(new ItemStack(block.getItemDropped(getState(), rand, 0), 1, block.damageDropped(this.getState())), 0.0F);
+						}
+					}
+				}
+			}
+
+			this.motionX *= 0.9800000190734863D;
+			this.motionY *= 0.9800000190734863D;
+			this.motionZ *= 0.9800000190734863D;
+		}
+		damageEntities(FIRED_DAMAGE);
+	}
+
+	public void createBlockParticles()
+	{
+		for(int i = 0; i < PARTICLE_AMOUNT; i++)
 		{
 			float x1 = 0.5F + (float) (posX - world.rand.nextFloat());
 			float y1 = (float) (posY + world.rand.nextFloat());
 			float z1 = 0.5F + (float) (posZ - world.rand.nextFloat());
 			world.spawnParticle(EnumParticleTypes.BLOCK_DUST, x1, y1, z1, (-0.5 + rand.nextFloat()) / 3, 0, (-0.5 + rand.nextFloat()) / 3, Block.getStateId(getState()));
-		}
-
-		EntityPlayer player = (EntityPlayer) getOwner();
-
-		age++;
-		if(player != null && age > 2)
-		{
-			PlayerData data = player.getCapability(PlayerData.CAPABILITY, null);
-			if(data.isHoldingCast() && !dataManager.get(FIRED))
-			{
-				this.noClip = true;
-				Vec3d look = player.getLookVec();
-				Vec3d eye = player.getPositionEyes(1.0F);
-				Vec3d pos = eye.addVector(look.x * 3, look.y * 3, look.z * 3);
-				this.prevPosX = this.posX;
-				this.prevPosY = this.posY;
-				this.prevPosZ = this.posZ;
-				this.posX = pos.x;
-				float a = ((float)age) / 10;
-				this.posY = pos.y  - 0.25F + (-0.1 + (Math.sin(a) / 8)) ;
-				this.posZ = pos.z;
-				this.setPosition(posX, posY, posZ);
-				//this.move(MoverType.SELF, this.motionX, this.motionY, this.motionZ);
-				setOrigin(new BlockPos(posX, posY, posZ));
-
-				damageEntities(2);
-			}
-			else
-			{
-				if(!dataManager.get(FIRED))
-				{
-					Vec3d look = player.getLookVec();
-					this.noClip = false;
-					this.motionX = look.x / 1.25;
-					this.motionY = look.y;
-					this.motionZ = look.z / 1.25;
-					dataManager.set(FIRED, true);
-				}
-			}
-		}
-		else
-		{
-			if(player == null)
-			{
-				dataManager.set(FIRED, true);
-			}
-		}
-		if(dataManager.get(FIRED))
-		{
-			Block block = getState().getBlock();
-			if(noClipSetting)
-			{
-				if(motionY > -0.3)
-					noClip= true;
-				else
-					noClip = false;
-			}
-
-
-			if (getState().getMaterial() == Material.AIR)
-			{
-				this.setDead();
-			}
-			else
-			{
-				this.prevPosX = this.posX;
-				this.prevPosY = this.posY;
-				this.prevPosZ = this.posZ;
-				fallTime++;
-
-				if (!this.hasNoGravity())
-				{
-					this.motionY -= 0.03999999910593033D;
-				}
-
-				this.move(MoverType.SELF, this.motionX, this.motionY, this.motionZ);
-
-				if (!this.world.isRemote)
-				{
-					BlockPos blockpos1 = new BlockPos(this);
-					boolean flag = getState().getBlock() == Blocks.CONCRETE_POWDER;
-					boolean flag1 = flag && this.world.getBlockState(blockpos1).getMaterial() == Material.WATER;
-					double d0 = this.motionX * this.motionX + this.motionY * this.motionY + this.motionZ * this.motionZ;
-
-					if (flag && d0 > 1.0D)
-					{
-						RayTraceResult raytraceresult = this.world.rayTraceBlocks(new Vec3d(this.prevPosX, this.prevPosY, this.prevPosZ), new Vec3d(this.posX, this.posY, this.posZ), true);
-
-						if (raytraceresult != null && this.world.getBlockState(raytraceresult.getBlockPos()).getMaterial() == Material.WATER)
-						{
-							blockpos1 = raytraceresult.getBlockPos();
-							flag1 = true;
-						}
-					}
-
-					if (!this.onGround && !flag1)
-					{
-						if (this.fallTime > 100 && !this.world.isRemote && (blockpos1.getY() < 1 || blockpos1.getY() > 256) || this.fallTime > 600)
-						{
-							if (this.shouldDropItem && this.world.getGameRules().getBoolean("doEntityDrops"))
-							{
-								this.entityDropItem(new ItemStack(block.getItemDropped(getState(), rand, 0), 1, block.damageDropped(this.getState())), 0.0F);
-							}
-
-							this.setDead();
-						}
-					}
-					else
-					{
-						IBlockState iblockstate = this.world.getBlockState(blockpos1);
-
-						if (this.world.isAirBlock(new BlockPos(this.posX, this.posY - 0.009999999776482582D, this.posZ))) //Forge: Don't indent below.
-							if (!flag1 && BlockFalling.canFallThrough(this.world.getBlockState(new BlockPos(this.posX, this.posY - 0.009999999776482582D, this.posZ))))
-							{
-								this.onGround = false;
-								return;
-							}
-
-						this.motionX *= 0.699999988079071D;
-						this.motionZ *= 0.699999988079071D;
-						this.motionY *= -0.5D;
-
-						if (iblockstate.getBlock() != Blocks.PISTON_EXTENSION)
-						{
-							this.setDead();
-
-							if (true)	// TODO: fix this shit
-							{
-								if (this.world.mayPlace(block, blockpos1, true, EnumFacing.UP, null) && (flag1 || !BlockFalling.canFallThrough(this.world.getBlockState(blockpos1.down()))) && this.world.setBlockState(blockpos1, this.getState(), 3))
-								{
-									if (block instanceof BlockFalling)
-									{
-										((BlockFalling)block).onEndFalling(this.world, blockpos1, this.getState(), iblockstate);
-									}
-
-									if (this.tileEntityData != null && block.hasTileEntity(this.getState()))
-									{
-										TileEntity tileentity = this.world.getTileEntity(blockpos1);
-
-										if (tileentity != null)
-										{
-											NBTTagCompound nbttagcompound = tileentity.writeToNBT(new NBTTagCompound());
-
-											for (String s : this.tileEntityData.getKeySet())
-											{
-												NBTBase nbtbase = this.tileEntityData.getTag(s);
-
-												if (!"x".equals(s) && !"y".equals(s) && !"z".equals(s))
-												{
-													nbttagcompound.setTag(s, nbtbase.copy());
-												}
-											}
-
-											tileentity.readFromNBT(nbttagcompound);
-											tileentity.markDirty();
-										}
-									}
-								}
-								else if (this.shouldDropItem && this.world.getGameRules().getBoolean("doEntityDrops"))
-								{
-									this.entityDropItem(new ItemStack(block.getItemDropped(getState(), rand, 0), 1, block.damageDropped(this.getState())), 0.0F);
-								}
-							}
-							else
-							{
-								((BlockFalling)block).onBroken(this.world, blockpos1);
-							}
-						}
-					}
-				}
-
-				this.motionX *= 0.9800000190734863D;
-				this.motionY *= 0.9800000190734863D;
-				this.motionZ *= 0.9800000190734863D;
-			}
-			damageEntities(5);
 		}
 	}
 
