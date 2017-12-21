@@ -3,14 +3,12 @@ package party.lemons.arcane.entity.render;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.entity.RenderLiving;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumHandSide;
 import net.minecraft.util.ResourceLocation;
 import party.lemons.arcane.entity.EntityArrowTurret;
 
@@ -38,6 +36,7 @@ public class RenderArrowTurret extends RenderLiving<EntityArrowTurret>
 	@Override
 	protected ResourceLocation getEntityTexture(EntityArrowTurret entity)
 	{
+		//return  new ResourceLocation("textures/entity/skeleton/skeleton.png");
 		return null;
 	}
 
@@ -56,7 +55,7 @@ public class RenderArrowTurret extends RenderLiving<EntityArrowTurret>
 		@Override
 		public void render(Entity entity, float f, float f1, float f2, float f3, float f4, float f5)
 		{
-			anchor.render(f5);
+			//anchor.render(f5);
 		}
 	}
 
@@ -75,21 +74,15 @@ public class RenderArrowTurret extends RenderLiving<EntityArrowTurret>
 
 			if(!itemstack.isEmpty())
 			{
-				this.renderHeldItem(entitylivingbaseIn, itemstack, ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND, EnumHandSide.RIGHT);
+				this.renderHeldItem(entitylivingbaseIn, itemstack);
 			}
 		}
 
-		private void renderHeldItem(EntityArrowTurret en, ItemStack p_188358_2_, ItemCameraTransforms.TransformType p_188358_3_, EnumHandSide handSide)
+		private void renderHeldItem(EntityArrowTurret en, ItemStack stack)
 		{
-			if(!p_188358_2_.isEmpty())
+			if(!stack.isEmpty())
 			{
-				GlStateManager.pushMatrix();
-				GlStateManager.translate((float) (1) / 16.0F, 0.125F, -0.625F);
-				GlStateManager.rotate((float) en.getLookVec().x, 1, 0, 0);
-				GlStateManager.rotate((float) en.getLookVec().y, 0, 1, 0);
-				GlStateManager.rotate((float) en.getLookVec().z, 0, 0, 1);
-				Minecraft.getMinecraft().getItemRenderer().renderItemSide(en, p_188358_2_, p_188358_3_, false);
-				GlStateManager.popMatrix();
+				Minecraft.getMinecraft().getItemRenderer().renderItemSide(en, stack,  ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND, false);
 			}
 		}
 		public boolean shouldCombineTextures()

@@ -36,7 +36,7 @@ public class SpellSummonArrowTurret extends Spell
 			if(ray != null)
 			{
 				BlockPos pos = ray.getBlockPos().up();
-				EntityArrowTurret turret = new EntityArrowTurret(player.world, pos.getX(), pos.getY(), pos.getZ());
+				EntityArrowTurret turret = new EntityArrowTurret(player.world, pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
 				player.world.spawnEntity(turret);
 			}
 			}
