@@ -50,7 +50,7 @@ public class SpellRockThrow extends Spell
 				}
 				else
 				{
-					player.sendStatusMessage(new TextComponentTranslation("spell.rock_throw.fail"), true);
+					player.sendStatusMessage(new TextComponentTranslation("spell.arcane.rock_throw.fail"), true);
 				}
 			}
 		}

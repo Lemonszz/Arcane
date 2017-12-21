@@ -58,12 +58,12 @@ public class SpellEmergencyHole extends Spell
 					}
 					else
 					{
-						player.sendStatusMessage(new TextComponentTranslation("spell.hole.fail"), true);
+						player.sendStatusMessage(new TextComponentTranslation("spell.arcane.hole.fail"), true);
 					}
 				}
 				else
 				{
-					player.sendStatusMessage(new TextComponentTranslation("spell.hole.fail"), true);
+					player.sendStatusMessage(new TextComponentTranslation("spell.arcane.hole.fail"), true);
 				}
 			}
 		}
