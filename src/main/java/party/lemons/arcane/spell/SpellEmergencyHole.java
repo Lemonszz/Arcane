@@ -35,7 +35,7 @@ public class SpellEmergencyHole extends Spell
 			Vec3d vec3b = vec3.addVector(look.x * getSpellReach(), look.y * getSpellReach(), look.z * getSpellReach());
 
 			RayTraceResult ray = player.world.rayTraceBlocks(vec3, vec3b, false, true, false);
-			if(ray != null)
+			if(ray != null && player.rotationPitch >= 70 && player.rotationPitch <= 100)
 			{
 				IBlockState state1 = player.world.getBlockState(ray.getBlockPos());
 				IBlockState state2 = player.world.getBlockState(ray.getBlockPos().down());

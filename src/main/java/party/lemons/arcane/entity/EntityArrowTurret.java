@@ -56,7 +56,9 @@ public class EntityArrowTurret extends EntityTurret
 	@Override
 	public float getEyeHeight()
 	{
-		return 1.2F;
+		float y = 1.2F;
+		double offset = -0.10 + ((y + Math.sin(this.age * 0.05)) / 4);
+		return (float)(y + offset);
 	}
 
 	@Override
@@ -105,7 +107,7 @@ public class EntityArrowTurret extends EntityTurret
 		double d1 = target.getEntityBoundingBox().minY + (double)(target.height / 3.0F) - entityarrow.posY;
 		double d2 = target.posZ - this.posZ;
 		double d3 = (double) MathHelper.sqrt(d0 * d0 + d2 * d2);
-		entityarrow.shoot(d0, d1 + d3 * 0.20000000298023224D, d2, 1.6F, (float)(14 - this.world.getDifficulty().getDifficultyId() * 4));
+		entityarrow.shoot(d0, d1 + d3 * 0.20000000298023224D, d2, 1.6F,0);
 		this.playSound(SoundEvents.ENTITY_SKELETON_SHOOT, 1.0F, 1.0F / (this.getRNG().nextFloat() * 0.4F + 0.8F));
 		this.world.spawnEntity(entityarrow);
 	}
@@ -113,7 +115,7 @@ public class EntityArrowTurret extends EntityTurret
 	protected EntityArrow getArrow(float p_190726_1_)
 	{
 		EntityTippedArrow entitytippedarrow = new EntityTippedArrow(this.world, this);
-		entitytippedarrow.setEnchantmentEffectsFromEntity(this, p_190726_1_);
+		entitytippedarrow.setPotionEffect(new ItemStack(Items.ARROW));
 		return entitytippedarrow;
 	}
 
