@@ -22,8 +22,8 @@ public class ModItems
 	@SubscribeEvent
 	public static void initItem(RegistryEvent.Register<Item> event)
 	{
-		spellTome = new ItemSpellTome().setRegistryName("spell_tome").setUnlocalizedName("spell_tome");
-		manaPotion = new ItemManaPotion().setRegistryName("mana_potion").setUnlocalizedName("mana_potion");
+		spellTome = new ItemSpellTome().setRegistryName("spell_tome").setUnlocalizedName(ArcaneConstants.MODID + ".spell_tome");
+		manaPotion = new ItemManaPotion().setRegistryName("mana_potion").setUnlocalizedName(ArcaneConstants.MODID + ".mana_potion");
 		event.getRegistry().registerAll(spellTome, manaPotion);
 	}
 

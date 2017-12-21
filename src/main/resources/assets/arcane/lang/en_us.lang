@@ -1,53 +1,53 @@
-page.elemental.name=Elemental
-page.farming.name=Farming
-page.summoning.name=Summoning
-page.alchemy.name=Alchemy
+page.arcane.elemental.name=Elemental
+page.arcane.farming.name=Farming
+page.arcane.summoning.name=Summoning
+page.arcane.alchemy.name=Alchemy
 
 itemGroup.arcane=Arcane
 
-item.spell_tome.name=Spell Tome
-item.mana_potion.name=Mana Potion
+item.arcane.spell_tome.name=Spell Tome
+item.arcane.mana_potion.name=Mana Potion
 
-spell.fireball_1.name=Flame
-spell.fireball_1.desc=A spray of fire
+spell.arcane.fireball_1.name=Flame
+spell.arcane.fireball_1.desc=A spray of fire
 
-spell.fireball_2.name=Scorch
-spell.fireball_2.desc=A bigger spray of fire
+spell.arcane.fireball_2.name=Scorch
+spell.arcane.fireball_2.desc=A bigger spray of fire
 
-spell.fireball_3.name=Fire Bolt
+spell.arcane.fireball_3.name=Fire Bolt
 spell.fireball_3.desc=Shoot a fireball
 
-spell.fireball_4.name=Fire Storm
-spell.fireball_4.desc=A bigger, badder fireball
+spell.arcane.fireball_4.name=Fire Storm
+spell.arcane.fireball_4.desc=A bigger, badder fireball
 
-spell.fireball_5.name=Inferno
-spell.fireball_5.desc=Obliterate your enemies
+spell.arcane.fireball_5.name=Inferno
+spell.arcane.fireball_5.desc=Obliterate your enemies
 
-spell.hole.name=Emergency Hole
-spell.hole.desc=Quickly hide yourself underground
-spell.hole.fail=You can't dig here!
+spell.arcane.hole.name=Emergency Hole
+spell.arcane.hole.desc=Quickly hide yourself underground
+spell.arcane.hole.fail=You can't dig here!
 
-spell.rock_throw.name=Rock Throw
-spell.rock_throw.desc=Hold and aim a block to crush those who get in your way
-spell.rock_throw.fail=You can't lift this block!
+spell.arcane.rock_throw.name=Rock Throw
+spell.arcane.rock_throw.desc=Hold and aim a block to crush those who get in your way
+spell.arcane.rock_throw.fail=You can't lift this block!
 
-spell.earth_wall.name=Earth Wall
-spell.earth_wall.desc=Sprout the earth from the ground
+spell.arcane.earth_wall.name=Earth Wall
+spell.arcane.earth_wall.desc=Sprout the earth from the ground
 
-spell.earth_4.name=Quake
-spell.earth_5.name=Eruption
+spell.arcane.earth_4.name=Quake
+spell.arcane.earth_5.name=Eruption
 
-spell.leaping.name=Leaping
-spell.leaping.desc=Take a leap of faith
+spell.arcane.leaping.name=Leaping
+spell.arcane.leaping.desc=Take a leap of faith
 
-spell.fertilizer.name=Fertilizer
-spell.fertilizer.desc=A burst of growth
+spell.arcane.fertilizer.name=Fertilizer
+spell.arcane.fertilizer.desc=A burst of growth
 
-spell.photosynthesis.name=Photosynthesis
-spell.photosynthesis.desc=Farming has never been so easy!
+spell.arcane.photosynthesis.name=Photosynthesis
+spell.arcane.photosynthesis.desc=Farming has never been so easy!
 
-spell.arrow_turret.name=Spectral Turret
-spell.arrow_turret.desc=Assemble a spectral turret to defend your riches
+spell.arcane.arrow_turret.name=Spectral Turret
+spell.arcane.arrow_turret.desc=Assemble a spectral turret to defend your riches
 
 magic.storedlevels=Points
 magic.requiredxp=Required Levels
