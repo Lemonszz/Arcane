@@ -15,7 +15,7 @@ import party.lemons.arcane.entity.EntityPhysicsBlock;
  */
 public class SpellRockThrow extends Spell
 {
-	double vel;
+	private double vel;
 
 	public SpellRockThrow(SpellPage elemental, int vel)
 	{

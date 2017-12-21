@@ -52,7 +52,7 @@ public interface PlayerData
 
 	class Impl implements PlayerData
 	{
-		private List<Spell> spells = new ArrayList<Spell>();
+		private List<Spell> spells = new ArrayList<>();
 		private Spell[] selectedSpells = new Spell[6];
 		private int selectedIndex = 0;
 		private long holdTime = -1;

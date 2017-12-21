@@ -131,7 +131,7 @@ public class GuiRadialMenu extends GuiScreen
 	}
 	private static final ResourceLocation _guiTexture = new ResourceLocation(ArcaneConstants.MODID ,"textures/gui/spellbook.png");
 
-	public static void drawRadialMenu(int mouseX, int mouseY)
+	private static void drawRadialMenu(int mouseX, int mouseY)
 	{
 		Tooltip tooltip = new Tooltip();
 

@@ -22,7 +22,7 @@ import net.minecraft.world.World;
  */
 public class EntityArrowTurret extends EntityTurret
 {
-	public static final DataParameter<Boolean> HAS_TARGET = EntityDataManager.createKey(EntityArrowTurret.class, DataSerializers.BOOLEAN);
+	private static final DataParameter<Boolean> HAS_TARGET = EntityDataManager.createKey(EntityArrowTurret.class, DataSerializers.BOOLEAN);
 
 	private final ItemStack stack = new ItemStack(Items.BOW);
 	public int age = 0;
@@ -112,7 +112,7 @@ public class EntityArrowTurret extends EntityTurret
 		this.world.spawnEntity(entityarrow);
 	}
 
-	protected EntityArrow getArrow(float p_190726_1_)
+	private EntityArrow getArrow(float p_190726_1_)
 	{
 		EntityTippedArrow entitytippedarrow = new EntityTippedArrow(this.world, this);
 		entitytippedarrow.setPotionEffect(new ItemStack(Items.ARROW));

@@ -23,10 +23,10 @@ import party.lemons.arcane.config.ArcaneConstants;
 @Mod.EventBusSubscriber(value = Side.CLIENT, modid = ArcaneConstants.MODID)
 public class GuiManaBar extends Gui
 {
-	static ResourceLocation bars = new ResourceLocation("minecraft:textures/gui/bars.png");
-	static int height = 47;
+	private static ResourceLocation bars = new ResourceLocation("minecraft:textures/gui/bars.png");
+	private static int height = 47;
 	public static int drawTime = 0;
-	public static boolean pos = false;
+	private static boolean pos = false;
 
 	@SubscribeEvent
 	public static void onGuiDrawPre(RenderGameOverlayEvent.Pre event)
@@ -51,7 +51,7 @@ public class GuiManaBar extends Gui
 			drawBar(event.getResolution());
 	}
 
-	public static void drawBar(ScaledResolution resolution)
+	private static void drawBar(ScaledResolution resolution)
 	{
 		PlayerData data = Minecraft.getMinecraft().player.getCapability(PlayerData.CAPABILITY, null);
 		if(!pos)

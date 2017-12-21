@@ -56,7 +56,7 @@ public class GuiSpellBook extends GuiScreen
 		}
 	}
 
-	public static void buildSpellCache()
+	private static void buildSpellCache()
 	{
 		for(SpellPage pa : SpellPages.pages)
 		{

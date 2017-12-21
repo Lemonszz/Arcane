@@ -7,6 +7,7 @@ import java.util.Random;
  */
 public class ArcaneUtils
 {
+	@SafeVarargs
 	public static <T> T choose(Random random, T... items)
 	{
 		return items[random.nextInt(items.length)];

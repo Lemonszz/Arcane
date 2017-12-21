@@ -3,7 +3,6 @@ package party.lemons.arcane.client;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
@@ -12,8 +11,8 @@ import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import party.lemons.arcane.api.capability.PlayerData;
 import party.lemons.arcane.api.spell.Spell;
 import party.lemons.arcane.api.spell.SpellRegistry;
@@ -33,8 +32,6 @@ import party.lemons.arcane.network.PacketSendCastSpell;
 @Mod.EventBusSubscriber(value = Side.CLIENT, modid = ArcaneConstants.MODID)
 public class ClientEvents
 {
-	public static TextureMap test;
-
 	@SubscribeEvent
 	public static void onClientTick(TickEvent.ClientTickEvent event)
 	{
@@ -114,7 +111,6 @@ public class ClientEvents
 				sp.setAtlasSprite(spr);
 			}
 		}
-		test = event.getMap();
 	}
 
 	@SubscribeEvent

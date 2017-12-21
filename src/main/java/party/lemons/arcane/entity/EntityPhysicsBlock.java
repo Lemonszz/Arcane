@@ -37,18 +37,18 @@ import java.util.UUID;
  */
 public class EntityPhysicsBlock extends EntityFallingBlock
 {
-	protected static final DataParameter<BlockPos> ORIGIN = EntityDataManager.createKey(EntityPhysicsBlock.class, DataSerializers.BLOCK_POS);
+	private static final DataParameter<BlockPos> ORIGIN = EntityDataManager.createKey(EntityPhysicsBlock.class, DataSerializers.BLOCK_POS);
 	private static final DataParameter<Optional<IBlockState>> STATE = EntityDataManager.createKey(EntityPhysicsBlock.class, DataSerializers.OPTIONAL_BLOCK_STATE);
 	public static final DataParameter<Boolean> FIRED = EntityDataManager.createKey(EntityPhysicsBlock.class, DataSerializers.BOOLEAN);
-	protected static final DataParameter<Optional<UUID>> OWNER_UNIQUE_ID = EntityDataManager.createKey(EntityTameable.class, DataSerializers.OPTIONAL_UNIQUE_ID);
+	private static final DataParameter<Optional<UUID>> OWNER_UNIQUE_ID = EntityDataManager.createKey(EntityTameable.class, DataSerializers.OPTIONAL_UNIQUE_ID);
 
-	final int PARTICLE_AMOUNT  = 5;
-	final int MIN_AGE_FOR_HOLD = 2;
-	final int HOLDING_DAMAGE = 2;
-	final int FIRED_DAMAGE = 5;
+	private final int PARTICLE_AMOUNT  = 5;
+	private final int MIN_AGE_FOR_HOLD = 2;
+	private final int HOLDING_DAMAGE = 2;
+	private final int FIRED_DAMAGE = 5;
 
-	int age = 0;
-	int fallTime = 0;
+	private int age = 0;
+	private int fallTime = 0;
 	private boolean noClipSetting;
 
 	public EntityPhysicsBlock(World worldIn)
@@ -161,7 +161,7 @@ public class EntityPhysicsBlock extends EntityFallingBlock
 		}
 	}
 
-	public void updateHolding(EntityPlayer player)
+	private void updateHolding(EntityPlayer player)
 	{
 		PlayerData data = player.getCapability(PlayerData.CAPABILITY, null);
 		if(data.isHoldingCast() && !dataManager.get(FIRED))
@@ -198,15 +198,12 @@ public class EntityPhysicsBlock extends EntityFallingBlock
 		}
 	}
 
-	public void updateFired()
+	private void updateFired()
 	{
 		Block block = getState().getBlock();
 		if(noClipSetting)
 		{
-			if(motionY > -0.3)
-				noClip= true;
-			else
-				noClip = false;
+			noClip = motionY > -0.3;
 		}
 
 		if (getState().getMaterial() == Material.AIR)
@@ -296,7 +293,7 @@ public class EntityPhysicsBlock extends EntityFallingBlock
 		damageEntities(FIRED_DAMAGE);
 	}
 
-	public void createBlockParticles()
+	private void createBlockParticles()
 	{
 		for(int i = 0; i < PARTICLE_AMOUNT; i++)
 		{
@@ -307,7 +304,7 @@ public class EntityPhysicsBlock extends EntityFallingBlock
 		}
 	}
 
-	public void damageEntities(float amount)
+	private void damageEntities(float amount)
 	{
 		List<EntityLivingBase> entities = world.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(posX -1, posY - 1, posZ -1, posX + 1, posY + 1, posZ + 1));
 		if(entities.size() > 0)

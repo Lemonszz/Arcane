@@ -16,7 +16,7 @@ import party.lemons.arcane.api.spell.SpellUtil;
  */
 public class SpellLeap extends Spell
 {
-	double vel;
+	private double vel;
 
 	public SpellLeap(SpellPage elemental, int vel)
 	{
