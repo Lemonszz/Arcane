@@ -49,8 +49,6 @@ public class PacketUnlockSpell implements IMessage
 					PlayerData caster = cp.getCapability(PlayerData.CAPABILITY, null);
 					caster.unlockSpell(message.spell);
 				}
-
-				PlayerData caster = cp.getCapability(PlayerData.CAPABILITY, null);
 			});
 
 			return null;
