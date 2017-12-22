@@ -19,6 +19,7 @@ public class Spells
 	public static Spell fireball_1, fireball_2, fireball_3, fireball_4, fireball_5,
 						rock_throw, earth_wall, hole, earth_4, earth_5,
 						leaping,
+						recall,
 						fertilizer, photosynthesis,
 						summon_arrow_turret;
 
@@ -94,6 +95,11 @@ public class Spells
 				.setCastMana(90)
 				.setUnlocalizedName(ArcaneConstants.MODID + ".arrow_turret")
 				.setRegistryName("arrow_turret");
+		recall = new SpellRecall(SpellPages.SUMMONING)
+				.setUnlockCost(5)
+				.setCastMana(120)
+				.setUnlocalizedName(ArcaneConstants.MODID + ".recall")
+				.setRegistryName("recall");
 
 		event.getRegistry().registerAll(
 				fireball_1,
@@ -109,7 +115,8 @@ public class Spells
 				leaping,
 				fertilizer,
 				photosynthesis,
-				summon_arrow_turret
+				summon_arrow_turret,
+				recall
 		);
 	}
 }

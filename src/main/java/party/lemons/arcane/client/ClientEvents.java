@@ -50,7 +50,6 @@ public class ClientEvents
 		{
 			ClientUtil.getMouseOverExtended(sp.getSpellReach());
 		}
-
 		int maxDawTime = 5000;
 		if(KeyBindings.keyCastSpell.isPressed())
 		{

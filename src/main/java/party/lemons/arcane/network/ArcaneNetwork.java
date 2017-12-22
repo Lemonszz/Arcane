@@ -32,5 +32,6 @@ public class ArcaneNetwork
 		NETWORK_INSTANCE.registerMessage(PacketSyncStoredLevels.Handler.class, PacketSyncStoredLevels.class, ind++, Side.CLIENT);
 		NETWORK_INSTANCE.registerMessage(PacketSendAddMaxMana.Handler.class, PacketSendAddMaxMana.class, ind++, Side.SERVER);
 		NETWORK_INSTANCE.registerMessage(PacketSendUnlockSpell.Handler.class, PacketSendUnlockSpell.class, ind++, Side.SERVER);
+		NETWORK_INSTANCE.registerMessage(PacketSyncRecallState.Handler.class, PacketSyncRecallState.class, ind++, Side.CLIENT);
 	}
 }
