@@ -12,6 +12,8 @@ import party.lemons.arcane.api.capability.PlayerData;
 import party.lemons.arcane.api.spell.SpellUtil;
 import party.lemons.arcane.config.ArcaneConstants;
 
+import java.util.function.Predicate;
+
 /**
  * Created by Sam on 22/12/2017.
  */
@@ -73,35 +75,48 @@ public class EventHandlerSpell
 				case NONE:
 					spawnPos = null;
 				case UP:
-					data.setRecallSpeed(data.getRecallSpeed() + speed);
-					player.capabilities.isFlying = true;
-					player.posY += data.getRecallSpeed();
-					playerMP.connection.setPlayerLocation(player.posX, player.posY, player.posZ, playerMP.rotationYaw, 90);
+					recallUpdate(playerMP, data, speed, true);
 					if(player.posY >= maxY)
 					{
-						player.capabilities.isFlying = false;
-						data.setRecallState(SpellRecall.RecallState.DOWN);
-						SpellUtil.syncData(player);
-						playerMP.connection.setPlayerLocation(spawnPos.getX() + 0.5, ((EntityPlayerMP) player).posY, spawnPos.getZ() + 0.5,  playerMP.rotationYaw, 90);
-						data.setRecallSpeed(0);
+						recallResetAtPosition(playerMP, data, spawnPos, SpellRecall.RecallState.DOWN, false);
 					}
-
 					break;
 				case DOWN:
-					data.setRecallSpeed(data.getRecallSpeed() + speed);
-					player.posY -= data.getRecallSpeed();
-					playerMP.connection.setPlayerLocation(playerMP.posX, player.posY, player.posZ, playerMP.rotationYaw, 90);
+					recallUpdate(playerMP, data, -speed, false);
 					if(playerMP.posY <= spawnPos.getY())
 					{
-						playerMP.connection.setPlayerLocation(spawnPos.getX() + 0.5, spawnPos.up().getY(), spawnPos.getZ() + 0.5, playerMP.rotationYaw, 90);
-						data.setRecallState(SpellRecall.RecallState.NONE);
-						SpellUtil.syncData(player);
-						player.capabilities.isFlying = false;
-						data.setRecallPosition(null);
-						data.setRecallSpeed(0);
+						recallResetAtPosition(playerMP, data, spawnPos, SpellRecall.RecallState.NONE, true);
 					}
 					break;
 			}
 		}
+	}
+
+	private static void recallUpdate(EntityPlayerMP playerMP, PlayerData data, float speed, boolean setFlying)
+	{
+		data.setRecallSpeed(data.getRecallSpeed() + Math.abs(speed));
+		playerMP.posY += Math.signum(speed) * data.getRecallSpeed();
+		playerMP.connection.setPlayerLocation(playerMP.posX, playerMP.posY, playerMP.posZ, playerMP.rotationYaw, 90);
+		if(setFlying)
+			playerMP.capabilities.isFlying = true;
+
+		reset.test(playerMP);
+	}
+
+	private interface IResetCondition
+	{
+		void reset(EntityPlayerMP player, PlayerData data, BlockPos position, SpellRecall.RecallState newState, boolean resetRecallPosition);
+	}
+
+	private static void recallResetAtPosition(EntityPlayerMP player, PlayerData data, BlockPos position, SpellRecall.RecallState newState, boolean resetRecallPosition)
+	{
+		player.connection.setPlayerLocation(position.getX() + 0.5, position.up().getY(), position.getZ() + 0.5, player.rotationYaw, 90);
+		data.setRecallState(newState);
+		SpellUtil.syncData(player);
+		player.capabilities.isFlying = false;
+		data.setRecallSpeed(0);
+
+		if(resetRecallPosition)
+			data.setRecallPosition(null);
 	}
 }
