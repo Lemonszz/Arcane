@@ -50,6 +50,7 @@ public class EntityPhysicsBlock extends EntityFallingBlock
 	private int age = 0;
 	private int fallTime = 0;
 	private boolean noClipSetting;
+	private boolean doesDamage;
 
 	public EntityPhysicsBlock(World worldIn)
 	{
@@ -71,13 +72,9 @@ public class EntityPhysicsBlock extends EntityFallingBlock
 		this.prevPosZ = z;
 		this.setOrigin(new BlockPos(this));
 		this.dataManager.set(OWNER_UNIQUE_ID, Optional.fromNullable(owner.getUniqueID()));
-
+		doesDamage = true;
 	}
 
-	public void setState(IBlockState state)
-	{
-		this.dataManager.set(STATE, Optional.fromNullable(state));
-	}
 	public IBlockState getState()
 	{
 		return (IBlockState) ((Optional) this.dataManager.get(STATE)).orNull();
@@ -306,6 +303,9 @@ public class EntityPhysicsBlock extends EntityFallingBlock
 
 	private void damageEntities(float amount)
 	{
+		if(!doesDamage)
+			return;;
+
 		List<EntityLivingBase> entities = world.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(posX -1, posY - 1, posZ -1, posX + 1, posY + 1, posZ + 1));
 		if(entities.size() > 0)
 		{
@@ -314,11 +314,6 @@ public class EntityPhysicsBlock extends EntityFallingBlock
 				e.attackEntityFrom(DamageSource.causePlayerDamage((EntityPlayer) getOwner()), amount);
 			}
 		}
-	}
-
-	public void setNoClipSetting()
-	{
-		this.noClipSetting = true;
 	}
 
 	public void fall(float distance, float damageMultiplier)
@@ -353,6 +348,8 @@ public class EntityPhysicsBlock extends EntityFallingBlock
 		}
 		UUID playerID = UUID.fromString(pl);
 		dataManager.set(OWNER_UNIQUE_ID, Optional.fromNullable(playerID));
+
+		doesDamage = compound.getBoolean("dodamage");
 		super.readFromNBT(compound);
 	}
 
@@ -365,6 +362,7 @@ public class EntityPhysicsBlock extends EntityFallingBlock
 		compound.setInteger("st", Block.getStateId(getState()));
 		compound.setInteger("age", age);
 		compound.setString("player", dataManager.get(OWNER_UNIQUE_ID).get().toString());
+		compound.setBoolean("dodamage", doesDamage);
 
 		return super.writeToNBT(compound);
 	}
@@ -374,4 +372,48 @@ public class EntityPhysicsBlock extends EntityFallingBlock
 	{
 		return this.world;
 	}
+
+
+	///Builder methods
+	public EntityPhysicsBlock setFired()
+	{
+		dataManager.set(FIRED, true);
+		return this;
+	}
+
+	public EntityPhysicsBlock setNoDamage()
+	{
+		this.doesDamage = false;
+		return this;
+	}
+
+	public EntityPhysicsBlock setVelocity(float x, float y, float z)
+	{
+		motionX = x;
+		motionY = y;
+		motionZ = z;
+
+		velocityChanged = true;
+
+		return this;
+	}
+
+	public EntityPhysicsBlock setState(IBlockState state)
+	{
+		this.dataManager.set(STATE, Optional.fromNullable(state));
+		return this;
+	}
+
+	public EntityPhysicsBlock setNoClipSetting()
+	{
+		this.noClipSetting = true;
+		return this;
+	}
+
+	public EntityPhysicsBlock spawn()
+	{
+		world.spawnEntity(this);
+		return this;
+	}
+	/////
 }

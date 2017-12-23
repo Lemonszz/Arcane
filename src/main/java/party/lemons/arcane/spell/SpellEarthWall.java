@@ -42,7 +42,6 @@ public class SpellEarthWall extends Spell
 			RayTraceResult ray = player.world.rayTraceBlocks(vec3, vec3b, false, true, false);
 			if(ray != null)
 			{
-				IBlockState state = player.world.getBlockState(ray.getBlockPos());
 				EnumFacing facing = player.getHorizontalFacing();
 				World world = player.world;
 
@@ -59,21 +58,11 @@ public class SpellEarthWall extends Spell
 						{
 							float yOffset = 0.24161F * (3 - i);
 							IBlockState st = world.getBlockState(enPos);
-							EntityPhysicsBlock block = new EntityPhysicsBlock(world, enPos.getX() + 0.5, yOffset + (enPos.getY() + 0.5), enPos.getZ() + 0.5, player);
-							block.setNoClipSetting();
-							block.setState(st);
-							block.getDataManager().set(EntityPhysicsBlock.FIRED, true);
-							block.motionX = 0;
-							block.motionY = 0.55;
-							block.motionZ = 0;
-
+							spawnPhysicsBlock(world, st, player, enPos.getX() + 0.5F, yOffset + (enPos.getY() + 0.5F), enPos.getZ() + 0.5F,  0.55F);
 							world.setBlockToAir(enPos);
-							world.spawnEntity(block);
 
 							if(i == 2)
 							{
-								block = new EntityPhysicsBlock(world, enPos.getX() + 0.5, yOffset + (enPos.getY()), enPos.getZ() + 0.5, player);
-
 								IBlockState fillerState = ArcaneUtils.choose(world.rand,
 										Blocks.STONE.getDefaultState(),
 										Blocks.DIRT.getDefaultState(),
@@ -82,12 +71,7 @@ public class SpellEarthWall extends Spell
 										Blocks.STONE.getDefaultState().withProperty(BlockStone.VARIANT, BlockStone.EnumType.GRANITE),
 										Blocks.GRAVEL.getDefaultState()
 								);
-								block.setState(fillerState);
-								block.getDataManager().set(EntityPhysicsBlock.FIRED, true);
-								block.motionX = 0;
-								block.motionY = 0.5;
-								block.motionZ = 0;
-								world.spawnEntity(block);
+								spawnPhysicsBlock(world, fillerState, player, enPos.getX() + 0.5F, yOffset + (enPos.getY()), enPos.getZ() + 0.5F, 0.5F);
 							}
 						}
 						else
@@ -101,6 +85,11 @@ public class SpellEarthWall extends Spell
 			}
 		}
 		useMana(player);
+	}
+
+	public void spawnPhysicsBlock(World world, IBlockState state, EntityPlayer player, float x, float y, float z, float motionY)
+	{
+		new EntityPhysicsBlock(world, x,y,z, player).setNoClipSetting().setFired().setVelocity(0, motionY, 0).setState(state).spawn();
 	}
 
 	@Override

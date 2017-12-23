@@ -41,11 +41,8 @@ public class SpellRockThrow extends Spell
 				IBlockState state = player.world.getBlockState(ray.getBlockPos());
 				if(ArcaneConfig.isEarthBlock(state.getBlock()))
 				{
-					EntityPhysicsBlock block = new EntityPhysicsBlock(player.world, ray.getBlockPos().getX() + 0.5F, ray.getBlockPos().getY(), ray.getBlockPos().getZ() + 0.5F, player);
-					block.setState(state);
+					new EntityPhysicsBlock(player.world, ray.getBlockPos().getX() + 0.5F, ray.getBlockPos().getY(), ray.getBlockPos().getZ() + 0.5F, player).setState(state).spawn();
 					player.world.setBlockToAir(ray.getBlockPos());
-					player.world.spawnEntity(block);
-
 					useMana(player);
 				}
 				else
