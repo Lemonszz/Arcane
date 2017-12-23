@@ -4,12 +4,10 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import party.lemons.arcane.api.spell.Spell;
 import party.lemons.arcane.api.spell.SpellPage;
-import party.lemons.arcane.api.spell.SpellUtil;
 
 /**
  * Created by Sam on 16/12/2017.
@@ -31,10 +29,6 @@ public class SpellLeap extends Spell
 			return;
 
 		player.playSound(SoundEvents.ENTITY_ENDERDRAGON_FLAP, player.world.rand.nextFloat(), player.world.rand.nextFloat());
-		Vec3d vec3d = player.getPositionEyes(1);
-		Vec3d vec3d1 = player.getLook(1);
-		Vec3d vec3d2 = vec3d.addVector(vec3d1.x * 1, vec3d1.y * 1, vec3d1.z * 1);
-		RayTraceResult res =  SpellUtil.rayTrace(player.world, 5, vec3d, vec3d2, false, false, true);
 
 		Vec3d vec3 = player.getLookVec();
 		double x = player.posX + (vec3.x * 4);

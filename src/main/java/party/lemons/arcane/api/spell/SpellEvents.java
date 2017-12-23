@@ -2,13 +2,13 @@ package party.lemons.arcane.api.spell;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import party.lemons.arcane.api.capability.PlayerData;
 import party.lemons.arcane.client.ClientUtil;
-import net.minecraftforge.event.entity.player.PlayerEvent;
 import party.lemons.arcane.client.gui.GuiManaBar;
 
 /**

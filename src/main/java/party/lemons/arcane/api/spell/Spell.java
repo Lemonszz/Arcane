@@ -288,7 +288,8 @@ public class Spell extends IForgeRegistryEntry.Impl<Spell> implements Comparable
 	{
 		return 20;
 	}
-	enum IconType
+
+	public enum IconType
 	{
 		TEXTURE,
 		ITEMSTACK
