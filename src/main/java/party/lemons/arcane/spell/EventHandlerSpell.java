@@ -3,6 +3,7 @@ package party.lemons.arcane.spell;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -28,6 +29,8 @@ public class EventHandlerSpell
 		{
 			EntityPlayer player = (EntityPlayer) event.getEntityLiving();
 			PlayerData data = player.getCapability(PlayerData.CAPABILITY, null);
+
+			//If the player is recalling, cancel the event so the player wont take damage when moving though blocks.
 			if(data.getRecallState() != SpellRecall.RecallState.NONE)
 				event.setCanceled(true);
 		}
@@ -37,52 +40,42 @@ public class EventHandlerSpell
 	public static void handleRecall(TickEvent.PlayerTickEvent event)
 	{
 		EntityPlayer player = event.player;
-
 		PlayerData data = player.getCapability(PlayerData.CAPABILITY, null);
 		SpellRecall.RecallState state = data.getRecallState();
-		final float speed = 0.15F;
-		final float maxY = 600;
-		final float maxSpeedForReset = 20;
 
+		final float speed = 0.15F;			//Speed increase per tick
+		final float maxY = 600;				//The max y position when moving up
+		final float maxSpeedForReset = 20;	//If the speed reaches this value, they will be automatically sent to their home
+
+		//state will not = NONE if the player is recalling
 		if(state != SpellRecall.RecallState.NONE)
+		{
 			if(!player.world.isRemote)
 			{
 				EntityPlayerMP playerMP = (EntityPlayerMP) player;
 				WorldServer worldIn = playerMP.getServerWorld();
-				BlockPos spawnPos = data.getRecallPosition();
 
-				if(spawnPos == null)
-				{
-					BlockPos bedLocation = player.getBedLocation();
-					boolean hasBed = true;
-					if(bedLocation == null)
-						hasBed = false;
-					else if(player.getBedSpawnLocation(worldIn, bedLocation, false) == null)
-						hasBed = false;
+				//Get the player's spawn location
+				BlockPos spawnPos = recallGetHomePosition(playerMP, data, worldIn);
 
-					if(!hasBed)
-					{
-						BlockPos blockpos = worldIn.provider.getRandomizedSpawnPoint();
-						spawnPos = worldIn.getTopSolidOrLiquidBlock(blockpos);
-					}
-					else
-					{
-						spawnPos = player.getBedSpawnLocation(worldIn, bedLocation, false);
-					}
-					data.setRecallPosition(spawnPos);
-				}
 				switch(state)
 				{
+					//If moving up
 					case UP:
+						//Update
 						recallUpdate(playerMP, data, speed, true);
 
+						//If the player has reached the maximum y position, move downwards
 						if(player.posY >= maxY)
 							recallResetAtPosition(playerMP, data, new BlockPos(spawnPos.getX(), playerMP.posY, spawnPos.getZ()), SpellRecall.RecallState.DOWN, false);
 						break;
+					//If moving down
 					case DOWN:
+						//Update
 						recallUpdate(playerMP, data, -speed, false);
 
-						if(playerMP.posY <= spawnPos.getY())
+						//If the player  has reached the spawn position y, reset
+						if(playerMP.posY <= spawnPos.down().getY())
 							recallResetAtPosition(playerMP, data, spawnPos, SpellRecall.RecallState.NONE, true);
 						break;
 				}
@@ -94,6 +87,46 @@ public class EventHandlerSpell
 					recallResetAtPosition(playerMP, data, spawnPos, SpellRecall.RecallState.NONE, true);
 				}
 			}
+		}
+	}
+
+	private static BlockPos recallGetHomePosition(EntityPlayerMP player, PlayerData data, World world)
+	{
+		//Get the saved recall position
+		BlockPos spawnPos = data.getRecallPosition();
+
+		//If there isn't any saved recall position, try and find one
+		if(spawnPos == null)
+		{
+			//If there is a bed position
+			boolean hasBed = true;
+
+			//Get player's stored bed location
+			BlockPos bedLocation = player.getBedLocation();
+
+			//If the bedLocation exists and there isn't a bed @ the bed location, player can't go to bed position.
+			if(bedLocation == null || player.getBedSpawnLocation(world, bedLocation, false) == null)
+				hasBed = false;
+
+			//If there isn't a bed to go to, get the world's spawn position
+			if(!hasBed)
+			{
+				BlockPos blockpos = world.provider.getRandomizedSpawnPoint();
+
+				//Set the location to the world spawn
+				spawnPos = world.getTopSolidOrLiquidBlock(blockpos);
+			}
+			else
+			{
+				//Set the location to the bed location
+				spawnPos = player.getBedSpawnLocation(world, bedLocation, false);
+			}
+
+			//Save the new position
+			data.setRecallPosition(spawnPos);
+		}
+
+		return spawnPos;
 	}
 
 	private static void recallUpdate(EntityPlayerMP playerMP, PlayerData data, float speed, boolean setFlying)
@@ -112,12 +145,22 @@ public class EventHandlerSpell
 
 	private static void recallResetAtPosition(EntityPlayerMP player, PlayerData data, BlockPos position, SpellRecall.RecallState newState, boolean resetRecallPosition)
 	{
+		//Make sure the player is moved to the correct position
 		player.connection.setPlayerLocation(position.getX() + 0.5, position.up().getY(), position.getZ() + 0.5, player.rotationYaw, 90);
+
+		//Move into the next state
 		data.setRecallState(newState);
+
+		//Sync all the data to the client to make sure there's no desync
 		SpellUtil.syncData(player);
+
+		//Make sure the player no longer has flying abilities
 		player.capabilities.isFlying = false;
+
+		//Reset the recall speed
 		data.setRecallSpeed(0);
 
+		//If we need to get rid of the stored position, remove it
 		if(resetRecallPosition)
 			data.setRecallPosition(null);
 	}

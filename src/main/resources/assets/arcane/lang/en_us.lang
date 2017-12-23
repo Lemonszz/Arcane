@@ -47,7 +47,10 @@ spell.arcane.photosynthesis.name=Photosynthesis
 spell.arcane.photosynthesis.desc=Farming has never been so easy!
 
 spell.arcane.arrow_turret.name=Spectral Turret
-spell.arcane.arrow_turret.desc=Assemble a spectral turret to defend your riches
+spell.arcane.arrow_turret.desc=Assemble a spectral turret to defend yourself
+
+spell.arcane.recall.name=Recall
+spell.arcane.recall.desc=Return to your respawn point
 
 magic.storedlevels=Points
 magic.requiredxp=Required Levels
