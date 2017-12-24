@@ -32,11 +32,8 @@ public class ActionEvents
 	@SubscribeEvent
 	public static void onPlayerUpdate(TickEvent.PlayerTickEvent event)
 	{
-		if(!event.player.world.isRemote)
-		{
-			PlayerData data = event.player.getCapability(PlayerData.CAPABILITY, null);
-			data.getActionState().getAction().onActionUpdate(event.player, data.getActionState());
-		}
+		PlayerData data = event.player.getCapability(PlayerData.CAPABILITY, null);
+		data.getActionState().getAction().onActionUpdate(event.player, data.getActionState());
 	}
 
 	@SubscribeEvent

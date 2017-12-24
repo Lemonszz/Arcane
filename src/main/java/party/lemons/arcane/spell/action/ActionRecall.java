@@ -56,7 +56,7 @@ public abstract class ActionRecall extends PlayerAction
 	public abstract BlockPos getResetPosition(EntityPlayer player, BlockPos spawnPos);
 	public abstract ActionState getNextState(ActionState currentState);
 
-	private BlockPos recallGetHomePosition(EntityPlayerMP player, PlayerData data, World world)
+	private BlockPos recallGetHomePosition(EntityPlayer player, PlayerData data, World world)
 	{
 		ActionState state = data.getActionState();
 		NBTTagCompound stateTags = state.getTagCompound();
@@ -103,7 +103,7 @@ public abstract class ActionRecall extends PlayerAction
 		return spawnPos;
 	}
 
-	private void recallUpdate(EntityPlayerMP playerMP, PlayerData data, float speed, boolean setFlying)
+	private void recallUpdate(EntityPlayer player, PlayerData data, float speed, boolean setFlying)
 	{
 		ActionState state = data.getActionState();
 		NBTTagCompound stateTags = state.getTagCompound();
@@ -114,21 +114,27 @@ public abstract class ActionRecall extends PlayerAction
 		}
 
 		//Set the player position
-		playerMP.posY += Math.signum(speed) * spd;
-		playerMP.connection.setPlayerLocation(playerMP.posX, playerMP.posY, playerMP.posZ, playerMP.rotationYaw, 90);
+		player.posY += Math.signum(speed) * spd;
+		player.rotationPitch  = 90;
+		if(!player.world.isRemote)
+		{
+			((EntityPlayerMP)player).connection.setPlayerLocation(player.posX, player.posY, player.posZ, player.rotationYaw, 90);
+		}
 
 		//If going up, set the player to flying to avoid console spam
 		if(setFlying)
-			playerMP.capabilities.isFlying = true;
+			player.capabilities.isFlying = true;
 
 		stateTags.setFloat("speed", spd);
 		state.setTagCompound(stateTags);
 	}
 
-	private void recallResetAtPosition(EntityPlayerMP player, PlayerData data, BlockPos position, ActionState newState)
+	private void recallResetAtPosition(EntityPlayer player, PlayerData data, BlockPos position, ActionState newState)
 	{
 		//Make sure the player is moved to the correct position
-		player.connection.setPlayerLocation(position.getX() + 0.5, position.up().getY(), position.getZ() + 0.5, player.rotationYaw, 90);
+		player.rotationPitch  = 90;
+		if(!player.world.isRemote)
+			((EntityPlayerMP)player).connection.setPlayerLocation(position.getX() + 0.5, position.up().getY(), position.getZ() + 0.5, player.rotationYaw, 90);
 
 		//Move into the next state
 		data.setActionState(player, newState);
