@@ -25,7 +25,7 @@ public class ActionEvents
 
 			ActionState state = data.getActionState();
 			boolean damage = state.getAction().onTakeDamage(player, event.getSource(), state);
-			event.setCanceled(damage);
+			event.setCanceled(!damage);
 		}
 	}
 

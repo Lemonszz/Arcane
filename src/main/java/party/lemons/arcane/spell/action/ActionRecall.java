@@ -5,12 +5,15 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTUtil;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import party.lemons.arcane.api.action.ActionState;
 import party.lemons.arcane.api.action.PlayerAction;
 import party.lemons.arcane.api.capability.PlayerData;
 import party.lemons.arcane.api.spell.SpellUtil;
+
+import java.util.Random;
 
 /**
  * Created by Sam on 24/12/2017.
@@ -21,6 +24,7 @@ public abstract class ActionRecall extends PlayerAction
 	protected final float maxY = 600;				//The max y position when moving up
 	protected final float maxSpeedForReset = 20;	//If the speed reaches this value, they will be automatically sent to their home
 	protected int direction = 0;
+	protected final int particleAmount = 10;
 
 	public ActionRecall(int direction)
 	{
@@ -36,20 +40,17 @@ public abstract class ActionRecall extends PlayerAction
 	@Override
 	public void onActionUpdate(EntityPlayer player, ActionState state)
 	{
-		if(!player.world.isRemote)
-		{
-			PlayerData data = player.getCapability(PlayerData.CAPABILITY, null);
-			recallGetHomePosition((EntityPlayerMP) player, data, player.world);
+		PlayerData data = player.getCapability(PlayerData.CAPABILITY, null);
+		recallGetHomePosition(player, data, player.world);
 
-			recallUpdate((EntityPlayerMP) player, data,  direction * speed, true);
+		recallUpdate(player, data,  direction * speed);
 
 
-			NBTTagCompound stateTags = state.getTagCompound();
-			BlockPos pos = NBTUtil.getPosFromTag(stateTags.getCompoundTag("spawnpos"));
+		NBTTagCompound stateTags = state.getTagCompound();
+		BlockPos pos = NBTUtil.getPosFromTag(stateTags.getCompoundTag("spawnpos"));
 
-			if(shouldSwitch(player, state, pos))
-				recallResetAtPosition((EntityPlayerMP) player, data, getResetPosition(player, pos), getNextState(state));
-		}
+		if(shouldSwitch(player, state, pos))
+			recallResetAtPosition(player, data, getResetPosition(player, pos), getNextState(state));
 	}
 
 	public abstract boolean shouldSwitch(EntityPlayer player, ActionState state, BlockPos spawnPos);
@@ -103,7 +104,7 @@ public abstract class ActionRecall extends PlayerAction
 		return spawnPos;
 	}
 
-	private void recallUpdate(EntityPlayer player, PlayerData data, float speed, boolean setFlying)
+	private void recallUpdate(EntityPlayer player, PlayerData data, float speed)
 	{
 		ActionState state = data.getActionState();
 		NBTTagCompound stateTags = state.getTagCompound();
@@ -120,13 +121,30 @@ public abstract class ActionRecall extends PlayerAction
 		{
 			((EntityPlayerMP)player).connection.setPlayerLocation(player.posX, player.posY, player.posZ, player.rotationYaw, 90);
 		}
+		else
+		{
+			World world = player.world;
+			Random rand = world.rand;
 
-		//If going up, set the player to flying to avoid console spam
-		if(setFlying)
-			player.capabilities.isFlying = true;
+			for(int i = 0; i < particleAmount; i++)
+			{
+				float posX = (float) (player.posX - 0.5F + rand.nextFloat());
+				float posZ = (float) (player.posZ - 0.5F + rand.nextFloat());
+				float posY = (float) (player.posY - rand.nextFloat() * 2);
+
+				float vX = rand.nextFloat() / 5;
+				float vZ = rand.nextFloat() / 5;
+				float vY = -0.25F;
+
+				world.spawnParticle(EnumParticleTypes.CLOUD, posX, posY, posZ, vX, vY, vZ);
+			}
+		}
 
 		stateTags.setFloat("speed", spd);
 		state.setTagCompound(stateTags);
+
+		player.capabilities.isFlying = true;
+		player.capabilities.allowFlying = true;
 	}
 
 	private void recallResetAtPosition(EntityPlayer player, PlayerData data, BlockPos position, ActionState newState)
@@ -144,6 +162,8 @@ public abstract class ActionRecall extends PlayerAction
 
 		//Make sure the player no longer has flying abilities
 		player.capabilities.isFlying = false;
+		if(!player.isCreative())
+			player.capabilities.allowFlying = false;
 	}
 
 	public static class RecallUp extends ActionRecall
