@@ -60,7 +60,7 @@ public class SpellUtil
 		ArcaneNetwork.NETWORK_INSTANCE.sendTo(new PacketSyncMaxMana(newData.getMaxMana()), pl);
 		ArcaneNetwork.NETWORK_INSTANCE.sendTo(new PacketSyncCurrentMana(newData.getMana()), pl);
 		ArcaneNetwork.NETWORK_INSTANCE.sendTo(new PacketSyncStoredLevels(newData.getStoredLevels()), pl);
-		ArcaneNetwork.NETWORK_INSTANCE.sendTo(new PacketSyncRecallState(newData.getRecallState()), pl);
+		ArcaneNetwork.NETWORK_INSTANCE.sendTo(new PacketSyncActionState(newData.getActionState()), pl);
 
 		//ArcaneNetwork.NETWORK_INSTANCE.sendTo(new PacketClientDebugData(), pl);
 	}
