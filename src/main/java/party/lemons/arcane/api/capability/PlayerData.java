@@ -5,14 +5,14 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.*;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.common.util.Constants;
+import party.lemons.arcane.api.action.ActionState;
+import party.lemons.arcane.api.action.PlayerAction;
 import party.lemons.arcane.api.spell.Spell;
 import party.lemons.arcane.api.spell.SpellRegistry;
-import party.lemons.arcane.spell.SpellRecall;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -53,14 +53,9 @@ public interface PlayerData
 	float getMana();
 	void setMana(float mana);
 
-	void startRecall(EntityPlayer player);
-	void setRecallState(SpellRecall.RecallState state);
-	SpellRecall.RecallState getRecallState();
-	void setRecallPosition(BlockPos pos);
-	@Nullable
-	BlockPos getRecallPosition();
-	float getRecallSpeed();
-	void setRecallSpeed(float speed);
+	ActionState getActionState();
+	void setActionState(EntityPlayer player, ActionState state);
+	void setActionStateFromLoad(ActionState state);
 
 	class Impl implements PlayerData
 	{
@@ -73,9 +68,7 @@ public interface PlayerData
 		private float maxMana = 100;
 		private float mana = maxMana;
 		private int storedLevels = 0;
-		private SpellRecall.RecallState recallState = SpellRecall.RecallState.NONE;
-		private BlockPos recallPos = null;
-		private float recallSpeed = 0.5F;
+		private ActionState actionState = new ActionState(PlayerAction.NONE);
 
 		@Override
 		public List<Spell> getUnlockedSpells()
@@ -228,46 +221,23 @@ public interface PlayerData
 		}
 
 		@Override
-		public void startRecall(EntityPlayer player)
+		public ActionState getActionState()
 		{
-			setRecallState(SpellRecall.RecallState.UP);
+			return actionState;
 		}
 
 		@Override
-		public void setRecallState(SpellRecall.RecallState state)
+		public void setActionState(EntityPlayer player, ActionState state)
 		{
-			this.recallState = state;
+			actionState.getAction().onActionEnd(player,  this.actionState);
+			this.actionState = state;
+			actionState.getAction().onActionStart(player,  this.actionState);
 		}
 
 		@Override
-		public SpellRecall.RecallState getRecallState()
+		public void setActionStateFromLoad(ActionState state)
 		{
-			return recallState;
-		}
-
-		@Override
-		public void setRecallPosition(BlockPos pos)
-		{
-			this.recallPos = pos;
-		}
-
-		@Override
-		@Nullable
-		public BlockPos getRecallPosition()
-		{
-			return recallPos;
-		}
-
-		@Override
-		public float getRecallSpeed()
-		{
-			return recallSpeed;
-		}
-
-		@Override
-		public void setRecallSpeed(float speed)
-		{
-			this.recallSpeed = speed;
+			this.actionState = state;
 		}
 	}
 
@@ -303,7 +273,8 @@ public interface PlayerData
 			tags.setFloat("maxmana", instance.getMaxMana());
 			tags.setFloat("mana", instance.getMana());
 			tags.setInteger("levels", instance.getStoredLevels());
-			tags.setInteger("recall", instance.getRecallState().ordinal());
+
+			tags.setTag("action", instance.getActionState().writeToNBT());
 			return tags;
 		}
 
@@ -334,7 +305,10 @@ public interface PlayerData
 			instance.setMaxMana(tags.getFloat("maxmana"));
 			instance.setMana(tags.getFloat("mana"));
 			instance.setStoredLevels(tags.getInteger("levels"));
-			instance.setRecallState(SpellRecall.RecallState.values()[tags.getInteger("recall")]);
+
+			NBTTagCompound actionTags = (NBTTagCompound) tags.getTag("action");
+			ActionState state = new ActionState(actionTags);
+			instance.setActionStateFromLoad(state);
 		}
 	}
 

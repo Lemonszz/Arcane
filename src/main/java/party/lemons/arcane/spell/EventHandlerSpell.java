@@ -1,17 +1,6 @@
 package party.lemons.arcane.spell;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
-import net.minecraft.world.WorldServer;
-import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent;
-import party.lemons.arcane.Arcane;
-import party.lemons.arcane.api.capability.PlayerData;
-import party.lemons.arcane.api.spell.SpellUtil;
 import party.lemons.arcane.config.ArcaneConstants;
 
 /**
@@ -21,7 +10,7 @@ import party.lemons.arcane.config.ArcaneConstants;
 @Mod.EventBusSubscriber(modid = ArcaneConstants.MODID)
 public class EventHandlerSpell
 {
-
+/*
 	@SubscribeEvent
 	public static void handleRecallDamage(LivingDamageEvent event)
 	{
@@ -163,5 +152,5 @@ public class EventHandlerSpell
 		//If we need to get rid of the stored position, remove it
 		if(resetRecallPosition)
 			data.setRecallPosition(null);
-	}
+	}*/
 }

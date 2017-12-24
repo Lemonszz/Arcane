@@ -3,43 +3,45 @@ package party.lemons.arcane.network;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessage;
 import net.minecraftforge.fml.common.network.simpleimpl.IMessageHandler;
 import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
+import party.lemons.arcane.api.action.ActionState;
 import party.lemons.arcane.api.capability.PlayerData;
-import party.lemons.arcane.spell.SpellRecall;
 
 /**
  * Created by Sam on 11/12/2017.
  */
-public class PacketSyncRecallState implements IMessage
+public class PacketSyncActionState implements IMessage
 {
-	public PacketSyncRecallState(){}
+	public PacketSyncActionState(){}
 
-	private int state;
+	NBTTagCompound tags;
 
-	public PacketSyncRecallState(SpellRecall.RecallState state)
+	public PacketSyncActionState(ActionState state)
 	{
-		this.state = state.ordinal();
+		tags = state.writeToNBT();
 	}
 
 	@Override
 	public void fromBytes(ByteBuf buf)
 	{
-		state = buf.readInt();
+		tags = ByteBufUtils.readTag(buf);
 	}
 
 	@Override
 	public void toBytes(ByteBuf buf)
 	{
-		buf.writeInt(state);
+		ByteBufUtils.writeTag(buf, tags);
 	}
 
-	public static class Handler implements IMessageHandler<PacketSyncRecallState, IMessage>
+	public static class Handler implements IMessageHandler<PacketSyncActionState, IMessage>
 	{
 
 		@Override
-		public IMessage onMessage(PacketSyncRecallState message, MessageContext ctx)
+		public IMessage onMessage(PacketSyncActionState message, MessageContext ctx)
 		{
 			Minecraft.getMinecraft().addScheduledTask(() ->
 			{
@@ -47,7 +49,7 @@ public class PacketSyncRecallState implements IMessage
 				if(cp.hasCapability(PlayerData.CAPABILITY, null))
 				{
 					PlayerData caster = cp.getCapability(PlayerData.CAPABILITY, null);
-					caster.setRecallState(SpellRecall.RecallState.values()[message.state]);
+					caster.setActionStateFromLoad(new ActionState(message.tags));
 				}
 			});
 			return null;
