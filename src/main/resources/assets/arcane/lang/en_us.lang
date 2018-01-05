@@ -57,3 +57,14 @@ magic.requiredxp=Required Levels
 magic.maxmana=Mana
 magic.manacost=Cast Mana
 magic.locked=Unlock Cost
+
+arcane.clearlinker=Your linker was cleared.
+arcane.clearlink=Link cleared!
+arcane.startlink=Link started!
+arcane.endlink=Link created!
+arcane.alreadylink=This block has reached it's link limit.
+arcane.faillink=Link failed!
+arcane.farlink=That block to too far to be linked.
+arcane.shortlink=That link to too short.
+arcane.invalidlink=You can't link those blocks together.
+arcane.haslinkface=This face has already been linked.

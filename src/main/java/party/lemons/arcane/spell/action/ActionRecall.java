@@ -70,6 +70,7 @@ public abstract class ActionRecall extends PlayerAction
 		}
 		else
 		{
+
 			//If there is a bed position
 			boolean hasBed = true;
 

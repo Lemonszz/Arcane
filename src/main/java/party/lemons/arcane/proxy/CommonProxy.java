@@ -9,6 +9,7 @@ import net.minecraftforge.fml.common.registry.EntityRegistry;
 import party.lemons.arcane.Arcane;
 import party.lemons.arcane.api.capability.PlayerData;
 import party.lemons.arcane.config.ArcaneConstants;
+import party.lemons.arcane.energy.EnergyMana;
 import party.lemons.arcane.entity.EntityArrowTurret;
 import party.lemons.arcane.entity.EntityFirestorm;
 import party.lemons.arcane.entity.EntityFirestormProjectile;
@@ -24,6 +25,8 @@ public class CommonProxy
 	{
 		ArcaneNetwork.initNetwork();
 		CapabilityManager.INSTANCE.register(PlayerData.class, new PlayerData.Storage(), PlayerData.Impl.class);
+		EnergyMana.register();
+
 		int id = 1;
 		EntityRegistry.registerModEntity(new ResourceLocation(ArcaneConstants.MODID + ":physicsblock"), EntityPhysicsBlock.class, "physicsblock", id++, Arcane.instance, 64, 3, true);
 		EntityRegistry.registerModEntity(new ResourceLocation(ArcaneConstants.MODID + ":firestormproj"), EntityFirestormProjectile.class, "firestormproj", id++, Arcane.instance, 64, 3, true);

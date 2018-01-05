@@ -32,6 +32,11 @@ public class Tooltip
 		this.lines.addAll(Arrays.asList(lines));
 	}
 
+	public void add(List<String> lines)
+	{
+		this.lines.addAll(lines);
+	}
+
 	public void draw(int xPos, int yPos, FontRenderer fontRenderer, RenderItem renderItem)
 	{
 		ScaledResolution res = new ScaledResolution(Minecraft.getMinecraft());

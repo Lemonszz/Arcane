@@ -281,7 +281,7 @@ public class Spell extends IForgeRegistryEntry.Impl<Spell> implements Comparable
 	}
 
 	/***
-	 * Used for raycasting spells, default 20 block range
+	 * Used for raycasting spells, default 20 blocks range
 	 * @return reach
 	 */
 	public float getSpellReach()

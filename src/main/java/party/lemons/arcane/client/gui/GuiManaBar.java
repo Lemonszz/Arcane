@@ -25,13 +25,13 @@ public class GuiManaBar extends Gui
 {
 	private static ResourceLocation bars = new ResourceLocation("minecraft:textures/gui/bars.png");
 	private static int height = 47;
-	public static int drawTime = 0;
+	public static float drawTime = 0;
 	private static boolean pos = false;
 
 	@SubscribeEvent
 	public static void onGuiDrawPre(RenderGameOverlayEvent.Pre event)
 	{
-		drawTime--;
+		drawTime = drawTime + (1) * event.getPartialTicks();
 
 		if(event.getType() == RenderGameOverlayEvent.ElementType.ARMOR  && Minecraft.getMinecraft().player.getTotalArmorValue() > 0)
 		{
