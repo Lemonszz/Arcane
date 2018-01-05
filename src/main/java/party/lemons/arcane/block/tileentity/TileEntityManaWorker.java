@@ -2,6 +2,7 @@ package party.lemons.arcane.block.tileentity;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ITickable;
+import party.lemons.arcane.energy.EnergyMana;
 
 /**
  * Created by Sam on 3/01/2018.
@@ -41,7 +42,7 @@ public abstract class TileEntityManaWorker extends TileEntityManaHolder implemen
 	public void readFromNBT(NBTTagCompound compound)
 	{
 		this.workTime = compound.getInteger("worktime");
-
+		EnergyMana.MANA_ENERGY.readNBT(getMana(), null, compound.getTag("mana"));
 		super.readFromNBT(compound);
 	}
 
@@ -49,7 +50,7 @@ public abstract class TileEntityManaWorker extends TileEntityManaHolder implemen
 	public NBTTagCompound writeToNBT(NBTTagCompound compound)
 	{
 		compound.setInteger("worktime", workTime);
-
+		compound.setTag("mana", EnergyMana.MANA_ENERGY.writeNBT(getMana(), null));
 		return super.writeToNBT(compound);
 	}
 

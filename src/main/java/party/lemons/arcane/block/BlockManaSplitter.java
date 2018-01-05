@@ -16,7 +16,7 @@ public class BlockManaSplitter extends BlockManaNode
 {
 	public BlockManaSplitter()
 	{
-		super(Material.WOOD);
+		super(Material.ROCK);
 		this.setUnlocalizedName(ArcaneConstants.MODID + ".mana_splitter");
 		this.setRegistryName("mana_splitter");
 		this.setCreativeTab(CreativeTabMagic.tab);

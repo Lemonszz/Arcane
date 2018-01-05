@@ -12,6 +12,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import party.lemons.arcane.block.tileentity.TileEntityManaNodeSplitter;
 import party.lemons.arcane.block.tileentity.TileEntityManaNodeStandard;
+import party.lemons.arcane.block.tileentity.TileEntitySmelter;
 
 import java.util.ArrayList;
 
@@ -23,13 +24,14 @@ public class ArcaneBlocks
 {
 	public static ArrayList<Block> blocks = new ArrayList<>();
 
-	public static Block MANA_NODE, MANA_SPLITTER;
+	public static Block MANA_NODE, MANA_SPLITTER, SMELTER;
 
 	@SubscribeEvent
 	public static void onBlockRegister(RegistryEvent.Register<Block> event)
 	{
 		MANA_NODE = new BlockManaNodeStandard();
 		MANA_SPLITTER = new BlockManaSplitter();
+		SMELTER = new BlockSmelter();
 
 		for(Block bl : blocks)
 		{
@@ -38,6 +40,7 @@ public class ArcaneBlocks
 
 		GameRegistry.registerTileEntity(TileEntityManaNodeStandard.class, "ar_mananode");
 		GameRegistry.registerTileEntity(TileEntityManaNodeSplitter.class, "ar_manasplitter");
+		GameRegistry.registerTileEntity(TileEntitySmelter.class, "ar_manasmelter");
 	}
 
 	@SubscribeEvent
